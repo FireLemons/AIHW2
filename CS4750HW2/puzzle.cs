@@ -10,7 +10,9 @@ namespace CS4750HW2
     class Puzzle
     {
         public enum Direction {Up, Down, Left, Right};
+
         private int[,] puzzle;
+        private Point emptyPosition;
         private List<Direction> path;
 
         public Puzzle(int[,] puzzle)
@@ -61,7 +63,7 @@ namespace CS4750HW2
                 return children;
             }
         }
-
+        
         private int calcManahatanDistance(int targetX, int targetY, int curX, int curY)
         {
             return Math.Abs(targetX - curX) + Math.Abs(targetY - curY);
@@ -136,15 +138,21 @@ namespace CS4750HW2
          **********************************************************************************/
         
         /// <summary>
-        /// Checks whether a tile is out of bounds
+        ///     Checks whether a tile is out of bounds
         /// </summary>
-        /// <param name="tile"></param>
+        /// <param name="tile">The position of the tile to be inspected</param>
         /// <returns>true if tile is in bounds false otherwise</returns>
         private bool isValidTile(Point tile)
         {
             return tile.X > -1 && tile.X < 3 && tile.Y > -1 && tile.Y < 3;
         }
         
+        /// <summary>
+        ///     Checks whether two tiles are adjacent
+        /// </summary>
+        /// <param name="tile1">The first tile to be checked</param>
+        /// <param name="tile2">The second tile to be checked</param>
+        /// <returns>true if the tiles are adjacent false otherwise</returns>
         private bool isAdjacent(Point tile1, Point tile2)
         {
             return Math.Abs(tile1.X - tile2.X) == 1 || Math.Abs(tile1.Y - tile2.Y) == 1; 
