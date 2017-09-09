@@ -42,39 +42,39 @@ namespace CS4750HW2
         /// <summary>
         ///     Gets the neighboring tiles as points excluding the parent.
         /// </summary>
-        /// <param name="parent">The parent tile</param>
+        /// <param name="origin">The tile moved from</param>
         /// <param name="tile">The tile to find children for</param>
         /// <returns>A list of all the children tiles of the tile as points</returns>
-        public List<Point> getChildren(Point parent, Point tile)
+        public List<Point> getMovePositions(Point origin)
         {
             List<Point> children = new List<Point>();
-            if (!(isValidTile(parent) && isValidTile(tile)) || !isAdjacent(parent, tile))
+            if (!(isValidTile(origin) && isValidTile(emptyPosition)) || !isAdjacent(origin, emptyPosition))
             {
                 return null;
             }
             else
             {
-                Point up = new Point(tile.X,tile.Y - 1);
-                Point down = new Point(tile.X,tile.Y + 1);
-                Point left = new Point(tile.X - 1, tile.Y);
-                Point right = new Point(tile.X + 1, tile.Y);
+                Point up = new Point(emptyPosition.X, emptyPosition.Y - 1);
+                Point down = new Point(emptyPosition.X, emptyPosition.Y + 1);
+                Point left = new Point(emptyPosition.X - 1, emptyPosition.Y);
+                Point right = new Point(emptyPosition.X + 1, emptyPosition.Y);
 
-                if (isValidTile(up) && !Point.Equals(up, parent))
+                if (isValidTile(up) && !Point.Equals(up, origin))
                 {
                     children.Add(up);
                 }
 
-                if (isValidTile(down) && !Point.Equals(down, parent))
+                if (isValidTile(down) && !Point.Equals(down, origin))
                 {
                     children.Add(down);
                 }
 
-                if (isValidTile(left) && !Point.Equals(left, parent))
+                if (isValidTile(left) && !Point.Equals(left, origin))
                 {
                     children.Add(left);
                 }
 
-                if (isValidTile(right) && !Point.Equals(right, parent))
+                if (isValidTile(right) && !Point.Equals(right, origin))
                 {
                     children.Add(right);
                 }
