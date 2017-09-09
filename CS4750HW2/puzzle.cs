@@ -19,12 +19,15 @@ namespace CS4750HW2
         };
         private int[,] puzzle;
         private Point emptyPosition;
+        private Point previous;
         private List<Direction> path;
 
         public Puzzle(int[,] puzzle)
         {
             this.puzzle = puzzle;
             this.path = new List<Direction>();
+            this.emptyPosition = new Point();
+            this.previous = new Point(-1, -1);
 
             for (int i = 0; i < puzzle.GetLength(0); i++)
             {
@@ -34,7 +37,6 @@ namespace CS4750HW2
                     {
                         emptyPosition.X = i;
                         emptyPosition.Y = j;
-                        System.Diagnostics.Debug.WriteLine(emptyPosition);
                     }
                 }
             }
@@ -60,25 +62,26 @@ namespace CS4750HW2
                 Point left = new Point(emptyPosition.X - 1, emptyPosition.Y);
                 Point right = new Point(emptyPosition.X + 1, emptyPosition.Y);
 
-                if (isValidTile(up))
+                if (isValidTile(up) && !Point.Equals(up, previous))
                 {
                     children.Add(up);
                 }
 
-                if (isValidTile(down))
+                if (isValidTile(down) && !Point.Equals(down, previous))
                 {
                     children.Add(down);
                 }
 
-                if (isValidTile(left))
+                if (isValidTile(left) && !Point.Equals(left, previous))
                 {
                     children.Add(left);
                 }
 
-                if (isValidTile(right))
+                if (isValidTile(right) && !Point.Equals(right, previous))
                 {
                     children.Add(right);
                 }
+
                 return children;
             }
         }
@@ -86,7 +89,7 @@ namespace CS4750HW2
         public int[,] getState(Direction d)
         {
             int[,] result = puzzle;
-            int temp = puzzle[emptyPosition.Y, emptyPosition.X];
+            int temp = puzzle[emptyPosition.X, emptyPosition.Y];
 
             switch (d)
             {
@@ -95,18 +98,18 @@ namespace CS4750HW2
                         return null;
                     }
                     
-                    puzzle[emptyPosition.Y, emptyPosition.X] = puzzle[emptyPosition.Y - 1, emptyPosition.X];
-                    puzzle[emptyPosition.Y - 1, emptyPosition.X] = temp;
+                    puzzle[emptyPosition.X, emptyPosition.Y] = puzzle[emptyPosition.X, emptyPosition.Y - 1];
+                    puzzle[emptyPosition.X, emptyPosition.Y - 1] = temp;
 
                     return result;
                 case Direction.Down:
-                    if (!isValidTile(new Point(emptyPosition.X, emptyPosition.Y + 1)))
+                    if (!isValidTile(new Point(emptyPosition.Y + 1, emptyPosition.X)))
                     {
                         return null;
                     }
                     
-                    puzzle[emptyPosition.Y, emptyPosition.X] = puzzle[emptyPosition.Y + 1, emptyPosition.X];
-                    puzzle[emptyPosition.Y + 1, emptyPosition.X] = temp;
+                    puzzle[emptyPosition.X, emptyPosition.Y] = puzzle[emptyPosition.X, emptyPosition.Y + 1];
+                    puzzle[emptyPosition.X, emptyPosition.Y + 1] = temp;
 
                     return result;
                 case Direction.Left:
@@ -115,18 +118,18 @@ namespace CS4750HW2
                         return null;
                     }
                     
-                    puzzle[emptyPosition.Y, emptyPosition.X] = puzzle[emptyPosition.Y, emptyPosition.X - 1];
-                    puzzle[emptyPosition.Y, emptyPosition.X - 1] = temp;
+                    puzzle[emptyPosition.X, emptyPosition.Y] = puzzle[emptyPosition.X - 1, emptyPosition.Y];
+                    puzzle[emptyPosition.X - 1, emptyPosition.Y] = temp;
 
                     return result;
                 case Direction.Right:
-                    if (!isValidTile(new Point(emptyPosition.X + 1, emptyPosition.Y)))
+                    if (!isValidTile(new Point(emptyPosition.Y, emptyPosition.X + 1)))
                     {
                         return null;
                     }
                     
-                    puzzle[emptyPosition.Y, emptyPosition.X] = puzzle[emptyPosition.Y, emptyPosition.X + 1];
-                    puzzle[emptyPosition.Y, emptyPosition.X + 1] = temp;
+                    puzzle[emptyPosition.X, emptyPosition.Y] = puzzle[emptyPosition.X + 1, emptyPosition.Y];
+                    puzzle[emptyPosition.X + 1, emptyPosition.Y] = temp;
 
                     return result;
                 default:
@@ -137,7 +140,33 @@ namespace CS4750HW2
         public bool setState(Direction d)
         {
             path.Add(d);
-            return (puzzle = getState(d)) != null;
+            previous = emptyPosition;
+            int[,] tryMove = getState(d);
+
+            if (tryMove != null)
+            {
+                puzzle = tryMove;
+                switch (d)
+                {
+                    case Direction.Up:
+                        emptyPosition.Y--;
+                        break;
+                    case Direction.Down:
+                        emptyPosition.Y++;
+                        break;
+                    case Direction.Left:
+                        emptyPosition.X--;
+                        break;
+                    case Direction.Right:
+                        emptyPosition.X++;
+                        break;
+                    default:
+                        return false;
+                }
+                return true;
+            }
+
+            return false;
         }
 
         public int getSingleManahatanDistance(Point tile)

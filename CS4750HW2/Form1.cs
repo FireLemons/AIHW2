@@ -95,7 +95,8 @@ namespace CS4750HW2
         private void btnIDS_Click(object sender, EventArgs e)
         {
             Puzzle puzzle = new Puzzle(Puzzle3);
-            displayData(puzzle.getMovePositions(new Point(0, 2)).Count.ToString());
+            puzzle.setState(Puzzle.Direction.Left);
+            displayData(puzzle.getMovePositions().Count.ToString());
         } //End private void btnIDS_Click(object sender, EventArgs e)
         /// <summary>
         /// 
