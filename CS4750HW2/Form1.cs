@@ -15,9 +15,54 @@ namespace CS4750HW2
     {
         /***************ATTRIBUTES***************/
         //Properties
+        Stopwatch timer;
+        private int[,] puzzle1 = {
+            {0, 1, 3 },
+            {4, 3, 5 },
+            {7, 8, 6 } };
+        private int[,] puzzle2 = {
+            { 0, 5, 2 },
+            { 1, 8, 3 },
+            { 4, 7, 6 } };
+        private int[,] puzzle3 = {
+            { 8, 6, 7 },
+            { 2, 5, 4 },
+            { 3, 0, 1 } };
+        private int[,] puzzleGoal = {
+            { 1, 2, 3 },
+            { 4, 5, 6 },
+            { 7, 8, 0 } };
 
         //Fields
-        Stopwatch timer;
+        int[,] Puzzle1
+        {
+            get
+            {
+                return puzzle1;
+            } //End get
+        } //End int[,] Puzzle1
+        int[,] Puzzle2
+        {
+            get
+            {
+                return puzzle2;
+            } //End get
+        } //End int[,] Puzzle2
+        int[,] Puzzle3
+        {
+            get
+            {
+                return puzzle3;
+            } //End get
+        } //End int[,] Puzzle3
+        int[,] PuzzleGoal
+        {
+            get
+            {
+                return puzzleGoal;
+            } //End get
+        } //End int[,] PuzzleGoal
+
 
         /***************CONSTRUCTOR***************/
         public Form1()
@@ -39,6 +84,7 @@ namespace CS4750HW2
             timer.Stop();
             this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString());
         } //End 
+        
 
         /***************EVENTS***************/
         /// <summary>
