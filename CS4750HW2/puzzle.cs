@@ -139,10 +139,23 @@ namespace CS4750HW2
         {
             return node.X > -1 && node.X < 3 && node.Y > -1 && node.Y < 3;
         }
-
+        
         private bool isAdjacent(Point node1, Point node2)
         {
             return Math.Abs(node1.X - node2.X) == 1 || Math.Abs(node1.Y - node2.Y) == 1; 
         }
+
+        public bool isInGoalState(int[,] curBoardState)
+        {
+            //Declare variables
+            bool returnVal = false;
+
+            if (getManhatanDistanceSum() == 0)
+            {
+                returnVal = true;
+            } //End if (getManhatanDistanceSum() == 0)
+
+            return returnVal;
+        } //End public bool isInGoalState(int[,] curBoardState)
     } //End class Puzzle
 } //End namespace CS4750HW2
