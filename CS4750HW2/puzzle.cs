@@ -24,11 +24,11 @@ namespace CS4750HW2
         /// </summary>
         /// <param name="parent">The parent tile</param>
         /// <param name="tile">The tile to find children for</param>
-        /// <returns>A list of all the children points of the node</returns>
+        /// <returns>A list of all the children tiles of the tile as points</returns>
         public List<Point> getChildren(Point parent, Point tile)
         {
             List<Point> children = new List<Point>();
-            if (!(isValidNode(parent) && isValidNode(tile)))
+            if (!(isValidTile(parent) && isValidTile(tile)))
             {
                 return null;
             }
@@ -39,22 +39,22 @@ namespace CS4750HW2
                 Point left = new Point(tile.X, tile.Y - 1);
                 Point right = new Point(tile.X, tile.Y + 1);
 
-                if (isValidNode(up) && !Point.Equals(up, parent))
+                if (isValidTile(up) && !Point.Equals(up, parent))
                 {
                     children.Add(up);
                 }
 
-                if (isValidNode(down) && !Point.Equals(down, parent))
+                if (isValidTile(down) && !Point.Equals(down, parent))
                 {
                     children.Add(down);
                 }
 
-                if (isValidNode(left) && !Point.Equals(left, parent))
+                if (isValidTile(left) && !Point.Equals(left, parent))
                 {
                     children.Add(left);
                 }
 
-                if (isValidNode(right) && !Point.Equals(right, parent))
+                if (isValidTile(right) && !Point.Equals(right, parent))
                 {
                     children.Add(right);
                 }
@@ -73,7 +73,7 @@ namespace CS4750HW2
             int distance = -1;
             int nodeNum = -1;
 
-            if (isValidNode(node))
+            if (isValidTile(node))
             {
                 nodeNum = puzzle[node.X, node.Y];
 
@@ -110,7 +110,7 @@ namespace CS4750HW2
 
                         break;
                 } //End switch (nodeNum)
-            } //End if (isValidNode(node))
+            } //End if (isValidTile(node))
             
             return distance;
         } //End public int getSingleManahatanDistance(Point node)
@@ -134,15 +134,20 @@ namespace CS4750HW2
         /**********************************************************************************
          * Helper Methods
          **********************************************************************************/
-
-        private bool isValidNode(Point node)
+        
+        /// <summary>
+        /// Checks whether a tile is out of bounds
+        /// </summary>
+        /// <param name="tile"></param>
+        /// <returns>true if tile is in bounds false otherwise</returns>
+        private bool isValidTile(Point tile)
         {
-            return node.X > -1 && node.X < 3 && node.Y > -1 && node.Y < 3;
+            return tile.X > -1 && tile.X < 3 && tile.Y > -1 && tile.Y < 3;
         }
         
-        private bool isAdjacent(Point node1, Point node2)
+        private bool isAdjacent(Point tile1, Point tile2)
         {
-            return Math.Abs(node1.X - node2.X) == 1 || Math.Abs(node1.Y - node2.Y) == 1; 
+            return Math.Abs(tile1.X - tile2.X) == 1 || Math.Abs(tile1.Y - tile2.Y) == 1; 
         }
 
         public bool isInGoalState(int[,] curBoardState)
