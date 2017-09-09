@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,7 @@ namespace CS4750HW2
         //Properties
 
         //Fields
+        Stopwatch timer;
 
         /***************CONSTRUCTOR***************/
         public Form1()
@@ -28,6 +30,15 @@ namespace CS4750HW2
         {
             this.rtxtResults.Clear();
         } //End public void reset()
+        public void displayData(string data)
+        {
+            this.rtxtResults.Text += data + "\n\n";
+        } //End public void displayData(string data)
+        public void displayMillisecondsElapsed()
+        {
+            timer.Stop();
+            this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString());
+        } //End 
 
         /***************EVENTS***************/
         /// <summary>
@@ -37,7 +48,9 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnIDS_Click(object sender, EventArgs e)
         {
-            this.rtxtResults.Text = "IDS: We don't do anything yet";
+            timer = Stopwatch.StartNew();
+            this.rtxtResults.Text = "IDS: We don't do anything yet\n";
+            displayMillisecondsElapsed();
         } //End private void btnIDS_Click(object sender, EventArgs e)
         /// <summary>
         /// 
@@ -46,7 +59,7 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnDFS_Click(object sender, EventArgs e)
         {
-            this.rtxtResults.Text = "DFS: We don't do anything yet";
+            this.rtxtResults.Text = "DFS: We don't do anything yet\n";
         } //End private void btnDFS_Click(object sender, EventArgs e)
         /// <summary>
         /// 
@@ -55,7 +68,7 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnAStar_Click(object sender, EventArgs e)
         {
-            this.rtxtResults.Text = "A*: We don't do anything yet";
+            this.rtxtResults.Text = "A*: We don't do anything yet\n";
         } //End private void btnAStar_Click(object sender, EventArgs e)
         /// <summary>
         /// 
@@ -70,7 +83,7 @@ namespace CS4750HW2
             this.btnDFS.PerformClick();
             this.btnAStar.PerformClick();
             */
-            this.rtxtResults.Text = "All: We don't do anything yet";
+            this.rtxtResults.Text = "All: We don't do anything yet\n";
         } //End private void btnAll_Click(object sender, EventArgs e)
         /// <summary>
         /// Clears rtxtResults of all text
