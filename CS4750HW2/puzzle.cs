@@ -9,7 +9,14 @@ namespace CS4750HW2
 {
     class Puzzle
     {
-        public enum Direction {Up, Down, Left, Right};
+        public enum Direction
+        {
+            NULL = -1,
+            Up = 1,
+            Down = 2,
+            Left = 3,
+            Right = 4
+        };
         private int[,] puzzle;
         private List<Direction> path;
 
@@ -134,7 +141,49 @@ namespace CS4750HW2
         /**********************************************************************************
          * Helper Methods
          **********************************************************************************/
-        
+        private Direction getReverseDirection(Direction direction)
+        {
+            //Declare variables
+            Direction reverseDirection  = Direction.NULL;
+
+            if (isValidDirection(direction))
+            {
+                switch (direction)
+                {
+                    case Direction.Up:
+                        reverseDirection = Direction.Down;
+                        break;
+                    case Direction.Down:
+                        reverseDirection = Direction.Up;
+                        break;
+                    case Direction.Left:
+                        reverseDirection = Direction.Right;
+                        break;
+                    case Direction.Right:
+                        reverseDirection = Direction.Left;
+                        break;
+                    default:
+                        reverseDirection = Direction.NULL;
+                        break;
+                } //End switch (direction)
+            } //End if (isValidDirection(direction))
+
+                return reverseDirection;
+        } //End private Direction getReverseDirection(Direction direction)
+
+        private bool isValidDirection(Direction direction)
+        {
+            //Declare variables
+            bool returnVal = false;
+
+            if ((int)direction >= 1 && (int)direction <= 4)
+            {
+                returnVal = true;
+            } //End if ((int)direction >= 1 && (int)direction <= 4)
+
+            return returnVal;
+        } //End private bool isValidDirection(Direction direction)
+
         /// <summary>
         /// Checks whether a tile is out of bounds
         /// </summary>
