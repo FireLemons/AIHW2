@@ -64,10 +64,14 @@ namespace CS4750HW2
             }
         }
 
-        private int calcManahatanDistance(Point targetTile, Point curTile)
+        public Puzzle getState(Direction d)
         {
-            return Math.Abs(targetTile.X - curTile.X) + Math.Abs(targetTile.Y - curTile.Y);
-        } //End private int calcManahatanDistance(Point targetTile, Point curTile)
+            switch (d)
+            {
+                default:
+                    return null;
+            }
+        }
 
         public int getSingleManahatanDistance(Point tile)
         {
@@ -170,5 +174,10 @@ namespace CS4750HW2
 
             return returnVal;
         } //End public bool isInGoalState(int[,] curBoardState)
+
+        private int calcManahatanDistance(Point targetTile, Point curTile)
+        {
+            return Math.Abs(targetTile.X - curTile.X) + Math.Abs(targetTile.Y - curTile.Y);
+        } //End private int calcManahatanDistance(Point targetTile, Point curTile)
     } //End class Puzzle
 } //End namespace CS4750HW2
