@@ -9,15 +9,21 @@ namespace CS4750HW2
 {
     class Puzzle {
 
-        // Data model of puzzle
-        private int[,] puzzle = new int[3, 3];
-
+        enum Direction {Up, Down, Left, Right};
+        private int[,] puzzle;
+        private List<Direction> path;
 
         public Puzzle(int[,] puzzle) {
             this.puzzle = puzzle;
+            this.path = new List<Direction>();
         }
 
-
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <param name="parent"></param>
+        /// <param name="node"></param>
+        /// <returns>A list of all the children points of the node</returns>
         public Point[] getChildren(Point parent, Point node) {
             return null;
         }
