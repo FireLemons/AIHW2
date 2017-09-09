@@ -63,50 +63,50 @@ namespace CS4750HW2
                 return children;
             }
         }
-        
-        private int calcManahatanDistance(int targetX, int targetY, int curX, int curY)
-        {
-            return Math.Abs(targetX - curX) + Math.Abs(targetY - curY);
-        } //End private int calcManahatanDistance(int targetX, int targetY, int curX, int curY)
 
-        public int getSingleManahatanDistance(Point node)
+        private int calcManahatanDistance(Point targetTile, Point curTile)
+        {
+            return Math.Abs(targetTile.X - curTile.X) + Math.Abs(targetTile.Y - curTile.Y);
+        } //End private int calcManahatanDistance(Point targetTile, Point curTile)
+
+        public int getSingleManahatanDistance(Point tile)
         {
             //Declare variables
             int distance = -1;
-            int nodeNum = -1;
-
-            if (isValidTile(node))
+            int tileNum = -1;
+            
+            if (isValidTile(tile))
             {
-                nodeNum = puzzle[node.X, node.Y];
+                tileNum = puzzle[tile.X, tile.Y];
 
-                switch (nodeNum)
+                switch (tileNum)
                 {
                     case 0:
-                        distance = calcManahatanDistance(2, 2, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(2, 2), tile);
                         break;
                     case 1:
-                        distance = calcManahatanDistance(0, 0, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(0, 0), tile);
                         break;
                     case 2:
-                        distance = calcManahatanDistance(1, 0, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(1, 0), tile);
                         break;
                     case 3:
-                        distance = calcManahatanDistance(2, 0, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(2, 0), tile);
                         break;
                     case 4:
-                        distance = calcManahatanDistance(0, 1, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(0, 1), tile);
                         break;
                     case 5:
-                        distance = calcManahatanDistance(1, 1, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(1, 1), tile);
                         break;
                     case 6:
-                        distance = calcManahatanDistance(2, 1, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(2, 1), tile);
                         break;
                     case 7:
-                        distance = calcManahatanDistance(0, 2, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(0, 2), tile);
                         break;
                     case 8:
-                        distance = calcManahatanDistance(1, 2, node.X, node.Y);
+                        distance = calcManahatanDistance(new Point(1, 2), tile);
                         break;
                     default:
 
@@ -115,7 +115,7 @@ namespace CS4750HW2
             } //End if (isValidTile(node))
             
             return distance;
-        } //End public int getSingleManahatanDistance(Point node)
+        } //End public int getSingleManahatanDistance(Point tile)
 
         public int getManhatanDistanceSum()
         {
