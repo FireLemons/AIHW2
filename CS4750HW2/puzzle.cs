@@ -26,14 +26,15 @@ namespace CS4750HW2
             this.puzzle = puzzle;
             this.path = new List<Direction>();
 
-            for (int i = 0; i < puzzle.Length; i++)
+            for (int i = 0; i < puzzle.GetLength(0); i++)
             {
-                for (int j = 0; j < puzzle.Length; j++)
+                for (int j = 0; j < puzzle.GetLength(1); j++)
                 {
                     if (puzzle[i, j] == 0)
                     {
-                        emptyPosition.X = j;
-                        emptyPosition.Y = i;
+                        emptyPosition.X = i;
+                        emptyPosition.Y = j;
+                        System.Diagnostics.Debug.WriteLine(emptyPosition);
                     }
                 }
             }
@@ -45,10 +46,10 @@ namespace CS4750HW2
         /// <param name="origin">The tile moved from</param>
         /// <param name="tile">The tile to find children for</param>
         /// <returns>A list of all the children tiles of the tile as points</returns>
-        public List<Point> getMovePositions(Point origin)
+        public List<Point> getMovePositions()
         {
             List<Point> children = new List<Point>();
-            if (!(isValidTile(origin) && isValidTile(emptyPosition)) || !isAdjacent(origin, emptyPosition))
+            if (!(isValidTile(emptyPosition)))
             {
                 return null;
             }
@@ -59,22 +60,22 @@ namespace CS4750HW2
                 Point left = new Point(emptyPosition.X - 1, emptyPosition.Y);
                 Point right = new Point(emptyPosition.X + 1, emptyPosition.Y);
 
-                if (isValidTile(up) && !Point.Equals(up, origin))
+                if (isValidTile(up))
                 {
                     children.Add(up);
                 }
 
-                if (isValidTile(down) && !Point.Equals(down, origin))
+                if (isValidTile(down))
                 {
                     children.Add(down);
                 }
 
-                if (isValidTile(left) && !Point.Equals(left, origin))
+                if (isValidTile(left))
                 {
                     children.Add(left);
                 }
 
-                if (isValidTile(right) && !Point.Equals(right, origin))
+                if (isValidTile(right))
                 {
                     children.Add(right);
                 }
@@ -135,6 +136,7 @@ namespace CS4750HW2
 
         public bool setState(Direction d)
         {
+            path.Add(d);
             return (puzzle = getState(d)) != null;
         }
 
@@ -286,7 +288,7 @@ namespace CS4750HW2
         /// <returns>true if the tiles are adjacent false otherwise</returns>
         private bool isAdjacent(Point tile1, Point tile2)
         {
-            return Math.Abs(tile1.X - tile2.X) == 1 || Math.Abs(tile1.Y - tile2.Y) == 1; 
+            return (Math.Abs(tile1.X - tile2.X) == 1 && tile1.Y == tile2.Y) || (Math.Abs(tile1.Y - tile2.Y) == 1 && tile1.X == tile2.X); 
         }
 
         public bool isInGoalState(int[,] curBoardState)
