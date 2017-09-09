@@ -39,5 +39,10 @@ namespace CS4750HW2
 
             return distance;
         } //End 
+
+        private bool isValidNode(Point node)
+        {
+            return node.X > -1 && node.X < 3 && node.Y > -1 && node.Y < 3;
+        }
     } //End class Puzzle
 } //End namespace CS4750HW2
