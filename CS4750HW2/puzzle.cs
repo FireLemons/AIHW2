@@ -21,5 +21,9 @@ namespace CS4750HW2
         public Point[] getChildren(Point parent, Point node) {
             return null;
         }
+
+        private bool isValidNode(Point node) {
+            return node.X > -1 && node.X < 3 && node.Y > -1 && node.Y < 3;
+        }
     }
 }
