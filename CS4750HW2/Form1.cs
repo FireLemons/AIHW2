@@ -17,22 +17,22 @@ namespace CS4750HW2
         //Properties
         Stopwatch timer;
         private int[,] puzzle1 = {
-            {0, 1, 3 },
-            {4, 3, 5 },
-            {7, 8, 6 } };
+            { 0, 4, 7 },
+            { 1, 2, 8 },
+            { 3, 5, 6 } };
         private int[,] puzzle2 = {
-            { 0, 5, 2 },
-            { 1, 8, 3 },
-            { 4, 7, 6 } };
+            { 0, 1, 4 },
+            { 5, 8, 7 },
+            { 2, 3, 6 } };
         private int[,] puzzle3 = {
-            { 8, 6, 7 },
-            { 2, 5, 4 },
-            { 3, 0, 1 } };
+            { 8, 2, 3 },
+            { 6, 5, 0 },
+            { 7, 4, 1 } };
         private int[,] puzzleGoal = {
-            { 1, 2, 3 },
-            { 4, 5, 6 },
-            { 7, 8, 0 } };
-
+            { 1, 4, 7 },
+            { 2, 5, 8 },
+            { 3, 6, 0 } };
+        
         //Fields
         int[,] Puzzle1
         {
@@ -94,9 +94,7 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnIDS_Click(object sender, EventArgs e)
         {
-            timer = Stopwatch.StartNew();
-            this.rtxtResults.Text = "IDS: We don't do anything yet\n";
-            displayMillisecondsElapsed();
+            Puzzle puzzle = new Puzzle(Puzzle1);
         } //End private void btnIDS_Click(object sender, EventArgs e)
         /// <summary>
         /// 

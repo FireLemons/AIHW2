@@ -189,13 +189,13 @@ namespace CS4750HW2
         public int getManhatanDistanceSum()
         {
             //Declare variables
-            int distanceSum = -1;
+            int distanceSum = 0;
 
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    distanceSum += getSingleManahatanDistance(new Point(i, j));
+                    distanceSum += getSingleManahatanDistance(new Point(j, i));
                 } //End for (int j = 0; j < 3; j++)
             } //End for (int i = 0; i < 3; i++)
 
@@ -205,6 +205,26 @@ namespace CS4750HW2
         /**********************************************************************************
          * Helper Methods
          **********************************************************************************/
+        public string printCurBoardState()
+        {
+            //Declare variables
+            string returnString = "";
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    returnString += this.puzzle[j, i].ToString() + " ";
+                } //End for (int j = 0; j < 3; j++)
+                if (i < 2)
+                {
+                    returnString += "\n";
+                } //End if (i < 2)
+            } //End for (int i = 0; i < 3; i++)
+            
+            return returnString;
+        } //End public string printCurBoardState()
+
         private Direction getReverseDirection(Direction direction)
         {
             //Declare variables
