@@ -83,8 +83,7 @@ namespace CS4750HW2
         {
             timer.Stop();
             this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString());
-        } //End 
-        
+        } //End public void displayMillisecondsElapsed()
 
         /***************EVENTS***************/
         /// <summary>
@@ -94,9 +93,12 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnIDS_Click(object sender, EventArgs e)
         {
-            Puzzle puzzle = new Puzzle(Puzzle3);
-            puzzle.setState(Puzzle.Direction.Left);
-            displayData(puzzle.getMovePositions().Count.ToString());
+            //Puzzle puzzle = new Puzzle(Puzzle3);
+            //puzzle.setState(Puzzle.Direction.Left);
+            //displayData(puzzle.getMovePositions().Count.ToString());
+            IDS ids = new IDS(Puzzle1);
+            ids.doTreeSearch();
+
         } //End private void btnIDS_Click(object sender, EventArgs e)
         /// <summary>
         /// 

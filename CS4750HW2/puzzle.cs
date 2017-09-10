@@ -7,16 +7,17 @@ using System.Threading.Tasks;
 
 namespace CS4750HW2
 {
+    public enum Direction
+    {
+        NULL = -1,
+        Up = 1,
+        Down = 2,
+        Left = 3,
+        Right = 4
+    };
+
     class Puzzle
     {
-        public enum Direction
-        {
-            NULL = -1,
-            Up = 1,
-            Down = 2,
-            Left = 3,
-            Right = 4
-        };
         private int[,] puzzle;
         private Point emptyPosition;
         private Point previous;
@@ -234,8 +235,13 @@ namespace CS4750HW2
         } //End public in getManhatanDistanceSum()
 
         /**********************************************************************************
-         * Helper Methods
-         **********************************************************************************/
+        * Helper Methods
+        **********************************************************************************/
+        public List<Direction> getPathList()
+        {
+            return this.path;
+        } //End 
+
         public string printCurBoardState()
         {
             //Declare variables
@@ -320,7 +326,7 @@ namespace CS4750HW2
             return (Math.Abs(tile1.X - tile2.X) == 1 && tile1.Y == tile2.Y) || (Math.Abs(tile1.Y - tile2.Y) == 1 && tile1.X == tile2.X); 
         }
 
-        public bool isInGoalState(int[,] curBoardState)
+        public bool isInGoalState()
         {
             //Declare variables
             bool returnVal = false;
@@ -331,7 +337,7 @@ namespace CS4750HW2
             } //End if (getManhatanDistanceSum() == 0)
 
             return returnVal;
-        } //End public bool isInGoalState(int[,] curBoardState)
+        } //End public bool isInGoalState()
 
         private int calcManahatanDistance(Point targetTile, Point curTile)
         {
