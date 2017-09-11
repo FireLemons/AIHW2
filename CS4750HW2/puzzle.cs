@@ -237,6 +237,29 @@ namespace CS4750HW2
         /**********************************************************************************
         * Helper Methods
         **********************************************************************************/
+        public Point getEmptyPosition()
+        {
+            return this.emptyPosition;
+        } //End public Point getEmptyPostion()
+
+        public Point getPreviousPosition()
+        {
+            return this.previous;
+        } //End public Point getPReviousPosition()
+
+        public int getTileID(Point tile)
+        {
+            //Declare variables
+            int tileID = -1;
+
+            if (isValidTile(tile))
+            {
+                tileID = this.puzzle[tile.X, tile.Y];
+            } //End if (isValidTile(tile))
+
+            return tileID;
+        } //End public int getTileID(Point tile)
+
         public List<Direction> getPathList()
         {
             return this.path;
@@ -262,7 +285,7 @@ namespace CS4750HW2
             return returnString;
         } //End public string printCurBoardState()
 
-        private Direction getReverseDirection(Direction direction)
+        public Direction getReverseDirection(Direction direction)
         {
             //Declare variables
             Direction reverseDirection  = Direction.NULL;
@@ -321,7 +344,7 @@ namespace CS4750HW2
         /// <param name="tile1">The first tile to be checked</param>
         /// <param name="tile2">The second tile to be checked</param>
         /// <returns>true if the tiles are adjacent false otherwise</returns>
-        private bool isAdjacent(Point tile1, Point tile2)
+        public bool isAdjacent(Point tile1, Point tile2)
         {
             return (Math.Abs(tile1.X - tile2.X) == 1 && tile1.Y == tile2.Y) || (Math.Abs(tile1.Y - tile2.Y) == 1 && tile1.X == tile2.X); 
         }
