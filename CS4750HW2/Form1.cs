@@ -77,7 +77,7 @@ namespace CS4750HW2
         } //End public void reset()
         public void displayData(string data)
         {
-            this.rtxtResults.Text += data + "\n\n";
+            this.rtxtResults.Text += data + "\n";
         } //End public void displayData(string data)
         public void displayMillisecondsElapsed()
         {
@@ -96,9 +96,52 @@ namespace CS4750HW2
             //Puzzle puzzle = new Puzzle(Puzzle3);
             //puzzle.setState(Puzzle.Direction.Left);
             //displayData(puzzle.getMovePositions().Count.ToString());
-            IDS ids = new IDS(Puzzle1);
-            ids.doTreeSearch();
-            this.displayData("");
+            this.displayData("Iterative Depth Search\n");
+
+            IDS ids1 = new IDS(Puzzle1);
+            this.timer = Stopwatch.StartNew();
+            var x = ids1.doTreeSearch();
+            this.timer.Stop();
+            this.displayData("Puzzle1:");
+            this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            if (x != null)
+            {
+                this.displayData("Success, a solution was found.");
+            } //End if (x != null)
+            else
+            {
+                this.displayData("Failure, a solution was not found.");
+            } //End else
+
+            IDS ids2 = new IDS(Puzzle2);
+            this.timer = Stopwatch.StartNew();
+            var y = ids2.doTreeSearch();
+            this.timer.Stop();
+            this.displayData("\nPuzzle2:");
+            this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            if (y != null)
+            {
+                this.displayData("Success, a solution was found.");
+            } //End if (y =! null)
+            else
+            {
+                this.displayData("Failure, a solution was not found.");
+            } //End else
+
+            IDS ids3 = new IDS(Puzzle3);
+            this.timer = Stopwatch.StartNew();
+            var z = ids3.doTreeSearch();
+            this.timer.Stop();
+            this.displayData("\nPuzzle3:");
+            this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            if (z != null)
+            {
+                this.displayData("Success, a solution was found.");
+            } //End if (z != null)
+            else
+            {
+                this.displayData("Failure, a solution was not found.");
+            } //End else
 
         } //End private void btnIDS_Click(object sender, EventArgs e)
         /// <summary>
