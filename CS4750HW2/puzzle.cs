@@ -170,6 +170,46 @@ namespace CS4750HW2
             return false;
         }
 
+        public Direction determineDirection(Point nextTile)
+        {
+            //Declare variables
+            Direction dir = Direction.NULL;
+            int xDiff = 0;
+            int yDiff = 0;
+            Point emptyTile = this.getEmptyPosition();
+
+            if (this.isAdjacent(nextTile, emptyTile))
+            {
+                xDiff = Math.Abs(nextTile.X - this.getEmptyPosition().X);
+                yDiff = Math.Abs(nextTile.Y - this.getEmptyPosition().Y);
+
+                if (xDiff == 0)
+                {
+                    if (nextTile.Y > emptyTile.Y)
+                    {
+                        dir = Direction.Down;
+                    } //End if (nextTile.Y > emptyTile.Y)
+                    else if (nextTile.Y < emptyTile.Y)
+                    {
+                        dir = Direction.Up;
+                    } //End else if (nextTile.Y < emptyTile.Y)
+                } //End if (xDiff == 0)
+                else if (yDiff == 0)
+                {
+                    if (nextTile.X > emptyTile.X)
+                    {
+                        dir = Direction.Right;
+                    } //End if (nextTile.X > emptyTile.X)
+                    else if (nextTile.X < emptyTile.X)
+                    {
+                        dir = Direction.Left;
+                    } //End else if (nextTile.X < emptyTile.X)
+                } //End else if (yDiff == 0)
+            } //End if (this.PuzzleBoard.isAdjacent(nextTile, emptyTile))
+
+            return dir;
+        } //End private Direction determineDirection(Point nextTile)
+
         public int getSingleManahatanDistance(Point tile)
         {
             //Declare variables

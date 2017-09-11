@@ -39,7 +39,7 @@
             // 
             // btnIDS
             // 
-            this.btnIDS.Location = new System.Drawing.Point(12, 353);
+            this.btnIDS.Location = new System.Drawing.Point(12, 505);
             this.btnIDS.Name = "btnIDS";
             this.btnIDS.Size = new System.Drawing.Size(75, 23);
             this.btnIDS.TabIndex = 0;
@@ -49,7 +49,7 @@
             // 
             // btnDFS
             // 
-            this.btnDFS.Location = new System.Drawing.Point(93, 353);
+            this.btnDFS.Location = new System.Drawing.Point(93, 505);
             this.btnDFS.Name = "btnDFS";
             this.btnDFS.Size = new System.Drawing.Size(75, 23);
             this.btnDFS.TabIndex = 1;
@@ -59,7 +59,7 @@
             // 
             // btnAStar
             // 
-            this.btnAStar.Location = new System.Drawing.Point(174, 353);
+            this.btnAStar.Location = new System.Drawing.Point(174, 505);
             this.btnAStar.Name = "btnAStar";
             this.btnAStar.Size = new System.Drawing.Size(75, 23);
             this.btnAStar.TabIndex = 2;
@@ -69,7 +69,7 @@
             // 
             // btnAll
             // 
-            this.btnAll.Location = new System.Drawing.Point(255, 353);
+            this.btnAll.Location = new System.Drawing.Point(255, 505);
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(75, 23);
             this.btnAll.TabIndex = 3;
@@ -81,7 +81,7 @@
             // 
             this.rtxtResults.Location = new System.Drawing.Point(12, 25);
             this.rtxtResults.Name = "rtxtResults";
-            this.rtxtResults.Size = new System.Drawing.Size(399, 322);
+            this.rtxtResults.Size = new System.Drawing.Size(399, 474);
             this.rtxtResults.TabIndex = 4;
             this.rtxtResults.Text = "";
             // 
@@ -96,7 +96,7 @@
             // 
             // btnClearResults
             // 
-            this.btnClearResults.Location = new System.Drawing.Point(336, 353);
+            this.btnClearResults.Location = new System.Drawing.Point(336, 505);
             this.btnClearResults.Name = "btnClearResults";
             this.btnClearResults.Size = new System.Drawing.Size(75, 23);
             this.btnClearResults.TabIndex = 6;
@@ -108,7 +108,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(428, 388);
+            this.ClientSize = new System.Drawing.Size(428, 540);
             this.Controls.Add(this.btnClearResults);
             this.Controls.Add(this.lblResults);
             this.Controls.Add(this.rtxtResults);
