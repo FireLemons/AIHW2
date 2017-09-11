@@ -17,9 +17,10 @@ namespace CS4750HW2
         public Puzzle PuzzleBoard { get; private set; }
         public List<int> firstFiveNodesExpanded { get; set; }
         private List<Point> Fringe { get; set; }
-        private List<Point> OrderedFringe { get; set; }
+        private List<Node> OrderedFringe { get; set; }
         public int TotalNumNodesExpanded { get; set; }
-        public List<int> pathTileIDs { get; set; }
+        public List<int> PathTileIDs { get; set; }
+        public List<Node> Path { get; set; }
 
         /***************CONSTRUCTOR***************/
         public IDS(int[,] puzzle)
@@ -28,8 +29,10 @@ namespace CS4750HW2
             copyBoardState(puzzle);
             this.PuzzleBoard = new Puzzle(puzzle);
             this.Fringe = new List<Point>();
+            this.OrderedFringe = new List<Node>();
             this.firstFiveNodesExpanded = new List<int>();
-            this.pathTileIDs = new List<int>();
+            this.PathTileIDs = new List<int>();
+            this.Path = new List<Node>();
         } //End public IDS(puzzle puzzle)
 
         /***************METHODS***************/
@@ -48,30 +51,87 @@ namespace CS4750HW2
             while (!PuzzleBoard.isInGoalState())
             {
                 //if fringe is empty then return failure
-                if (this.Fringe.Count == 0)
+                /*
+                if (this.Fringe.Count <= 0 && this.OrderedFringe.Count <= 0)
                 {
                     return null;
-                } //End if (this.Fringe.Count == 0)
+                } //End if (this.Fringe.Count <= 0 && this.OrderedFringe.Count <= 0)
+                //*/
 
                 //node = Remove-Front(fringe)
-                nextMove = determineNextMove();
-
-                if (nextMove == Direction.NULL)
+                if (curDepth >= maxDepth && this.OrderedFringe.Count <= 0)
                 {
-                    return null;
-                } //End  if (nextMove == Direction.NULL)
+                    maxDepth += 1;
+                    curDepth = 0;
+                    this.PuzzleBoard = new Puzzle(this.originalBoardState);
+                    this.Fringe.Clear();
+                    this.Fringe = PuzzleBoard.getMovePositions();
+                    this.Path.Clear();
+                    continue;
+                } //End if (curDepth >= maxDepth)
 
-                this.PuzzleBoard.setState(nextMove);
-                curDepth += 1;
-
-                this.OrderedFringe.RemoveAt(0);
-
-                if (numNodesExpanded < 5)
+                if (curDepth >= maxDepth)
                 {
-                    this.firstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
-                } //End if (numNodesExpanded < 5)
+                    if (curDepth > this.OrderedFringe[0].DepthWhenFound)
+                    {
+                        while (curDepth > this.OrderedFringe[0].DepthWhenFound)
+                        {
+                            curDepth -= 1;
+                            this.PuzzleBoard.setState(this.PuzzleBoard.getReverseDirection(this.Path.Last().DirUsedToReachTile));
+                            this.Path.Remove(this.Path.Last());
+                        } //End while (curDepth > this.OrderedFringe[0].DepthWhenFound)
 
-                this.pathTileIDs.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
+                        nextMove = determineDirection(this.OrderedFringe[0].TileLocation);
+
+                        if (nextMove == Direction.NULL)
+                        {
+                            return null;
+                        } //End  if (nextMove == Direction.NULL)
+
+                        this.PuzzleBoard.setState(nextMove);
+                        curDepth += 1;
+
+                        this.OrderedFringe.RemoveAt(0);
+
+                        if (this.firstFiveNodesExpanded.Count < 5)
+                        {
+                            this.firstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
+                        } //End if (numNodesExpanded < 5)
+
+                        this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, nextMove));
+
+                        //if Goal-Test(problem,State(node)) then return node
+                        if (this.PuzzleBoard.isInGoalState())
+                        {
+                            break;
+                        } //End if (this.PuzzleBoard.isInGoalState())
+                    } //End if (curDepth > this.OrderedFringe[0].DepthWhenFound)
+                } //End 
+
+                if (curDepth < maxDepth)
+                {
+                    nextMove = determineNextMove(curDepth);
+
+                    if (nextMove == Direction.NULL)
+                    {
+                        return null;
+                    } //End  if (nextMove == Direction.NULL)
+
+                    this.PuzzleBoard.setState(nextMove);
+                    curDepth += 1;
+
+                    this.OrderedFringe.RemoveAt(0);
+
+                    if (this.firstFiveNodesExpanded.Count < 5)
+                    {
+                        this.firstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
+                    } //End if (numNodesExpanded < 5)
+
+                    //this.PathTileIDs.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
+                    this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, nextMove));
+                } //End if (curDepth < maxDepth)
+
+
 
                 //if Goal-Test(problem,State(node)) then return node
                 if (this.PuzzleBoard.isInGoalState())
@@ -90,14 +150,17 @@ namespace CS4750HW2
                 } //End if (curDepth >= maxDepth)
 
                 //fringe = InsertAll(Expand(node, problem), fringe)
-                this.Fringe.Clear();
-                this.Fringe = PuzzleBoard.getMovePositions();
+                if (curDepth < maxDepth)
+                {
+                    this.Fringe.Clear();
+                    this.Fringe = PuzzleBoard.getMovePositions();
+                } //End if (curDepth < maxDepth)
             } //End while (!PuzzleBoard.isInGoalState())
 
             return this.PuzzleBoard.getPathList();
         } //End 
 
-        private Direction determineNextMove()
+        private Direction determineNextMove(int curDepth)
         {
             //Declare variables
             Point nextTile = new Point(-1, -1);
@@ -106,6 +169,7 @@ namespace CS4750HW2
 
             while (this.Fringe.Count > 0)
             {
+                tileID = 9;
                 for (int i = 0; i < this.Fringe.Count; i++)
                 {
                     if (this.PuzzleBoard.getTileID(Fringe[i]) < tileID)
@@ -115,12 +179,12 @@ namespace CS4750HW2
                     } //End if (this.PuzzleBoard.getTileID(Fringe[i]) > tileID)
                 } //End for (int i = 0; i < this.Fringe.Count; i++)
 
-                this.OrderedFringe.Insert(0, nextTile);
+                this.OrderedFringe.Insert(0, new Node(nextTile, this.PuzzleBoard.getTileID(nextTile), curDepth));
 
                 this.Fringe.Remove(nextTile);
             } //End while (this.Fringe.Count > )
             
-            dir = determineDirection(this.OrderedFringe[0]);
+            dir = determineDirection(this.OrderedFringe[0].TileLocation);
 
             return dir;
         } //End private Direction determineNextMove()
