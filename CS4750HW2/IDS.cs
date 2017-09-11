@@ -63,10 +63,11 @@ namespace CS4750HW2
                 {
                     maxDepth += 1;
                     curDepth = 0;
-                    this.PuzzleBoard = new Puzzle(this.originalBoardState);
+                    //this.PuzzleBoard = new Puzzle(this.originalBoardState);
+                    resetPuzzleBoard();
+                    this.Path.Clear();
                     this.Fringe.Clear();
                     this.Fringe = PuzzleBoard.getMovePositions();
-                    this.Path.Clear();
                     continue;
                 } //End if (curDepth >= maxDepth)
 
@@ -81,6 +82,7 @@ namespace CS4750HW2
                             this.Path.Remove(this.Path.Last());
                         } //End while (curDepth > this.OrderedFringe[0].DepthWhenFound)
 
+                        /**
                         nextMove = determineDirection(this.OrderedFringe[0].TileLocation);
 
                         if (nextMove == Direction.NULL)
@@ -105,9 +107,31 @@ namespace CS4750HW2
                         {
                             break;
                         } //End if (this.PuzzleBoard.isInGoalState())
+                        //*/
                     } //End if (curDepth > this.OrderedFringe[0].DepthWhenFound)
                 } //End 
 
+                determineNextMove(curDepth);
+                nextMove = determineDirection(this.OrderedFringe[0].TileLocation);
+
+                if (nextMove == Direction.NULL)
+                {
+                    return null;
+                } //End  if (nextMove == Direction.NULL)
+
+                this.PuzzleBoard.setState(nextMove);
+                curDepth += 1;
+
+                this.OrderedFringe.RemoveAt(0);
+
+                if (this.firstFiveNodesExpanded.Count < 5)
+                {
+                    this.firstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
+                } //End if (numNodesExpanded < 5)
+
+                this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, nextMove));
+                
+                /**
                 if (curDepth < maxDepth)
                 {
                     nextMove = determineNextMove(curDepth);
@@ -130,8 +154,7 @@ namespace CS4750HW2
                     //this.PathTileIDs.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
                     this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, nextMove));
                 } //End if (curDepth < maxDepth)
-
-
+                //*/
 
                 //if Goal-Test(problem,State(node)) then return node
                 if (this.PuzzleBoard.isInGoalState())
@@ -139,27 +162,54 @@ namespace CS4750HW2
                     break;
                 } //End if (this.PuzzleBoard.isInGoalState())
 
-                if (this.OrderedFringe.Count <= 0)
-                {
-                    maxDepth += 1;
-                    curDepth = 0;
-                    this.PuzzleBoard = new Puzzle(this.originalBoardState);
-                    this.Fringe.Clear();
-                    this.Fringe = PuzzleBoard.getMovePositions();
-                    continue;
-                } //End if (curDepth >= maxDepth)
-
                 //fringe = InsertAll(Expand(node, problem), fringe)
                 if (curDepth < maxDepth)
                 {
                     this.Fringe.Clear();
                     this.Fringe = PuzzleBoard.getMovePositions();
                 } //End if (curDepth < maxDepth)
+
+                if (this.OrderedFringe.Count <= 0 && this.Fringe.Count <= 0)
+                {
+                    maxDepth += 1;
+                    curDepth = 0;
+                    //this.PuzzleBoard = new Puzzle(this.originalBoardState);
+                    resetPuzzleBoard();
+                    this.Path.Clear();
+                    this.Fringe.Clear();
+                    this.Fringe = PuzzleBoard.getMovePositions();
+                    continue;
+                } //End if (this.OrderedFringe.Count <= 0 && this.Fringe.Count <= 0)
             } //End while (!PuzzleBoard.isInGoalState())
 
             return this.PuzzleBoard.getPathList();
         } //End 
 
+        private void determineNextMove(int curDepth)
+        {
+            //Declare variables
+            Point nextTile = new Point(-1, -1);
+            int tileID = 9;
+
+            while (this.Fringe.Count > 0)
+            {
+                tileID = 9;
+                for (int i = 0; i < this.Fringe.Count; i++)
+                {
+                    if (this.PuzzleBoard.getTileID(Fringe[i]) < tileID)
+                    {
+                        tileID = this.PuzzleBoard.getTileID(Fringe[i]);
+                        nextTile = Fringe[i];
+                    } //End if (this.PuzzleBoard.getTileID(Fringe[i]) > tileID)
+                } //End for (int i = 0; i < this.Fringe.Count; i++)
+
+                this.OrderedFringe.Insert(0, new Node(nextTile, this.PuzzleBoard.getTileID(nextTile), curDepth));
+
+                this.Fringe.Remove(nextTile);
+            } //End while (this.Fringe.Count > )
+        } //End private Direction determineNextMove()
+
+        /*
         private Direction determineNextMove(int curDepth)
         {
             //Declare variables
@@ -188,6 +238,7 @@ namespace CS4750HW2
 
             return dir;
         } //End private Direction determineNextMove()
+        //*/
 
         private Direction determineDirection(Point nextTile)
         {
@@ -228,6 +279,21 @@ namespace CS4750HW2
 
             return dir;
         } //End private Direction determineDirection(Point nextTile)
+
+        private void resetPuzzleBoard()
+        {
+            int[,] puzzle = new int[3, 3];
+
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    puzzle[j, i] = this.originalBoardState[j, i];
+                } //End for (int j = 0; j < 3; j++)
+            } //End for (int i = 0; i < 3; i++)
+
+            this.PuzzleBoard = new Puzzle(puzzle);
+        } //End private void resetPuzzleBoard()
 
         private void copyBoardState(int[,] puzzle)
         {
