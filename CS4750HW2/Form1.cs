@@ -98,6 +98,7 @@ namespace CS4750HW2
             //displayData(puzzle.getMovePositions().Count.ToString());
             IDS ids = new IDS(Puzzle1);
             ids.doTreeSearch();
+            this.displayData("");
 
         } //End private void btnIDS_Click(object sender, EventArgs e)
         /// <summary>
