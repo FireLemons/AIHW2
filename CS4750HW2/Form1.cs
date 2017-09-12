@@ -104,9 +104,12 @@ namespace CS4750HW2
             this.timer.Stop();
             this.displayData("Puzzle1:");
             this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            displayData(ids1.reportFirstFiveNodesExpanded());
+
             if (x != null)
             {
                 this.displayData("Success, a solution was found.");
+                displayData(ids1.reportPathSolution());
             } //End if (x != null)
             else
             {
@@ -119,9 +122,12 @@ namespace CS4750HW2
             this.timer.Stop();
             this.displayData("\nPuzzle2:");
             this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            displayData(ids2.reportFirstFiveNodesExpanded());
+
             if (y != null)
             {
                 this.displayData("Success, a solution was found.");
+                displayData(ids2.reportPathSolution());
             } //End if (y =! null)
             else
             {
@@ -134,9 +140,12 @@ namespace CS4750HW2
             this.timer.Stop();
             this.displayData("\nPuzzle3:");
             this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            displayData(ids3.reportFirstFiveNodesExpanded());
+
             if (z != null)
             {
                 this.displayData("Success, a solution was found.");
+                displayData(ids3.reportPathSolution());
             } //End if (z != null)
             else
             {

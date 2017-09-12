@@ -15,7 +15,7 @@ namespace CS4750HW2
 
         //Fields
         public Puzzle PuzzleBoard { get; private set; }
-        public List<int> firstFiveNodesExpanded { get; set; }
+        public List<int> FirstFiveNodesExpanded { get; set; }
         private List<Point> Fringe { get; set; }
         private List<Node> OrderedFringe { get; set; }
         public int TotalNumNodesExpanded { get; set; }
@@ -30,7 +30,7 @@ namespace CS4750HW2
             this.PuzzleBoard = new Puzzle(puzzle);
             this.Fringe = new List<Point>();
             this.OrderedFringe = new List<Node>();
-            this.firstFiveNodesExpanded = new List<int>();
+            this.FirstFiveNodesExpanded = new List<int>();
             this.TotalNumNodesExpanded = 0;
             this.PathTileIDs = new List<int>();
             this.Path = new List<Node>();
@@ -46,7 +46,7 @@ namespace CS4750HW2
 
             //fringe = Insert(Make-Node(Initial-State[problem]), fringe)
             this.Fringe = PuzzleBoard.getMovePositions();
-            this.firstFiveNodesExpanded.Add(0);
+            this.FirstFiveNodesExpanded.Add(0);
             maxDepth += 1;
             this.TotalNumNodesExpanded += 1;
 
@@ -62,9 +62,9 @@ namespace CS4750HW2
                     this.Fringe.Clear();
                     this.Fringe = PuzzleBoard.getMovePositions();
 
-                    if (this.firstFiveNodesExpanded.Count < 5)
+                    if (this.FirstFiveNodesExpanded.Count < 5)
                     {
-                        this.firstFiveNodesExpanded.Add(0);
+                        this.FirstFiveNodesExpanded.Add(0);
                     } //End if (numNodesExpanded < 5)
 
                     continue;
@@ -99,9 +99,9 @@ namespace CS4750HW2
 
                 this.OrderedFringe.RemoveAt(0);
 
-                if (this.firstFiveNodesExpanded.Count < 5)
+                if (this.FirstFiveNodesExpanded.Count < 5)
                 {
-                    this.firstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
+                    this.FirstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
                 } //End if (numNodesExpanded < 5)
 
                 this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, nextMove));
@@ -148,7 +148,8 @@ namespace CS4750HW2
                 } //End for (int i = 0; i < this.Fringe.Count; i++)
 
                 this.OrderedFringe.Insert(0, new Node(nextTile, this.PuzzleBoard.getTileID(nextTile), curDepth));
-                this.firstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(nextTile));
+                
+                
 
                 this.Fringe.Remove(nextTile);
             } //End while (this.Fringe.Count > 0)
@@ -250,5 +251,43 @@ namespace CS4750HW2
                 } //End for (int j = 0; j < 3; j++)
             } //End for (int i = 0; i < 3; i++)
         } //End private void copyBoardState(int[,] puzzle)
+
+        public string reportFirstFiveNodesExpanded()
+        {
+            //Declare variables
+            string returnString = "";
+
+            for (int i = 0; i < this.FirstFiveNodesExpanded.Count; i++)
+            {
+                returnString += this.FirstFiveNodesExpanded[i].ToString();
+                
+                if  (i < this.FirstFiveNodesExpanded.Count - 1)
+                {
+                    returnString += ", ";
+                } //End if  (i < this.FirstFiveNodesExpanded.Count - 1)
+            } //End for (int i = 0; i < this.FirstFiveNodesExpanded.Count; i++)
+
+            return returnString;
+        } //End public string reportFirstFiveNodesExpanded()
+
+        public string reportPathSolution()
+        {
+            //Declare variables
+            string returnString = "";
+
+            for (int i = 0; i < this.Path.Count; i++)
+            {
+                returnString += this.Path[i].DirUsedToReachTile.ToString() + ":" + this.Path[i].TileID.ToString();
+
+                if (i < this.Path.Count - 1)
+                {
+                    returnString += " -> ";
+                } //End if (i < this.Path.Count - 1)
+            } //End for (int i = 0; i < this.Path.Count; i++)
+
+            returnString += "\nNumber of moves: " + this.Path.Count;
+
+            return returnString;
+        } //End public string reportPathSolution()
     } //End class IDS
 } //End namespace CS4750HW2
