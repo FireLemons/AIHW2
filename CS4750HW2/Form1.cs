@@ -102,8 +102,7 @@ namespace CS4750HW2
             this.timer = Stopwatch.StartNew();
             var x = ids1.doTreeSearch();
             this.timer.Stop();
-            this.displayData("Puzzle1:");
-            this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            displayData("Puzzle1:\n");
             displayData(ids1.reportFirstFiveNodesExpanded());
 
             if (x != null)
@@ -116,12 +115,14 @@ namespace CS4750HW2
                 this.displayData("Failure, a solution was not found.");
             } //End else
 
+            displayData("Number of nodes expanded: " + ids1.TotalNumNodesExpanded.ToString());
+            displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+
             IDS ids2 = new IDS(Puzzle2);
             this.timer = Stopwatch.StartNew();
             var y = ids2.doTreeSearch();
             this.timer.Stop();
-            this.displayData("\nPuzzle2:");
-            this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            displayData("\nPuzzle2:\n");
             displayData(ids2.reportFirstFiveNodesExpanded());
 
             if (y != null)
@@ -134,12 +135,14 @@ namespace CS4750HW2
                 this.displayData("Failure, a solution was not found.");
             } //End else
 
+            displayData("Number of nodes expanded: " + ids2.TotalNumNodesExpanded.ToString());
+            displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+
             IDS ids3 = new IDS(Puzzle3);
             this.timer = Stopwatch.StartNew();
             var z = ids3.doTreeSearch();
             this.timer.Stop();
-            this.displayData("\nPuzzle3:");
-            this.displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            displayData("\nPuzzle3:\n");
             displayData(ids3.reportFirstFiveNodesExpanded());
 
             if (z != null)
@@ -151,6 +154,9 @@ namespace CS4750HW2
             {
                 this.displayData("Failure, a solution was not found.");
             } //End else
+
+            displayData("Number of nodes expanded: " + ids3.TotalNumNodesExpanded.ToString());
+            displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
 
         } //End private void btnIDS_Click(object sender, EventArgs e)
         /// <summary>

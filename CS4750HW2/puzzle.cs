@@ -406,5 +406,10 @@ namespace CS4750HW2
         {
             return Math.Abs(targetTile.X - curTile.X) + Math.Abs(targetTile.Y - curTile.Y);
         } //End private int calcManahatanDistance(Point targetTile, Point curTile)
+
+        public int[,] getPuzzleState()
+        {
+            return this.puzzle;
+        } //End public int[,] getPuzzleState()
     } //End class Puzzle
 } //End namespace CS4750HW2

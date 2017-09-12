@@ -15,7 +15,7 @@ namespace CS4750HW2
 
         //Fields
         public Puzzle PuzzleBoard { get; private set; }
-        public List<int> FirstFiveNodesExpanded { get; set; }
+        public List<int[,]> FirstFiveNodesExpanded { get; set; }
         private List<Point> Fringe { get; set; }
         private List<Node> OrderedFringe { get; set; }
         public int TotalNumNodesExpanded { get; set; }
@@ -27,10 +27,10 @@ namespace CS4750HW2
         {
             originalBoardState = new int[3,3];
             copyBoardState(puzzle);
-            this.PuzzleBoard = new Puzzle(puzzle);
+            this.PuzzleBoard = new Puzzle(copyState(new int[3,3], puzzle));
             this.Fringe = new List<Point>();
             this.OrderedFringe = new List<Node>();
-            this.FirstFiveNodesExpanded = new List<int>();
+            this.FirstFiveNodesExpanded = new List<int[,]>();
             this.TotalNumNodesExpanded = 0;
             this.PathTileIDs = new List<int>();
             this.Path = new List<Node>();
@@ -46,8 +46,10 @@ namespace CS4750HW2
 
             //fringe = Insert(Make-Node(Initial-State[problem]), fringe)
             this.Fringe = PuzzleBoard.getMovePositions();
-            this.FirstFiveNodesExpanded.Add(0);
+            this.FirstFiveNodesExpanded.Add(copyState(new int[3, 3], this.originalBoardState));
             maxDepth += 1;
+            this.TotalNumNodesExpanded += 1;
+            this.FirstFiveNodesExpanded.Add(copyState(new int[3, 3], this.originalBoardState));
             this.TotalNumNodesExpanded += 1;
 
             while (!PuzzleBoard.isInGoalState())
@@ -61,10 +63,10 @@ namespace CS4750HW2
                     this.Path.Clear();
                     this.Fringe.Clear();
                     this.Fringe = PuzzleBoard.getMovePositions();
-
+                    this.TotalNumNodesExpanded += 1;
                     if (this.FirstFiveNodesExpanded.Count < 5)
                     {
-                        this.FirstFiveNodesExpanded.Add(0);
+                        this.FirstFiveNodesExpanded.Add(copyState(new int[3,3], this.originalBoardState));
                     } //End if (numNodesExpanded < 5)
 
                     continue;
@@ -96,15 +98,17 @@ namespace CS4750HW2
 
                 this.PuzzleBoard.setState(nextMove);
                 curDepth += 1;
+                this.TotalNumNodesExpanded += 1;
 
                 this.OrderedFringe.RemoveAt(0);
 
                 if (this.FirstFiveNodesExpanded.Count < 5)
                 {
-                    this.FirstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
+                    this.FirstFiveNodesExpanded.Add(copyState(new int[3, 3], this.PuzzleBoard.getPuzzleState()));
+                    //this.FirstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
                 } //End if (numNodesExpanded < 5)
 
-                this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, nextMove));
+                this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, this.PuzzleBoard.getPuzzleState(), nextMove));
                 
                 //if Goal-Test(problem,State(node)) then return node
                 if (this.PuzzleBoard.isInGoalState())
@@ -116,10 +120,12 @@ namespace CS4750HW2
                 if (curDepth < maxDepth)
                 {
                     this.Fringe.Clear();
-                    this.Fringe = PuzzleBoard.getMovePositions();
-                    this.TotalNumNodesExpanded += this.Fringe.Count;
+                    getTotalMovePositions();
+                    //this.Fringe = PuzzleBoard.getMovePositions();
+                    //this.TotalNumNodesExpanded += this.Fringe.Count;
                 } //End if (curDepth < maxDepth)
                 
+                //387420489
                 if (this.TotalNumNodesExpanded >= 100000)
                 {
                     return null;
@@ -129,6 +135,12 @@ namespace CS4750HW2
             return this.Path;
         } //End public List<Node> doTreeSearch()
 
+        private void getTotalMovePositions()
+        {
+            this.Fringe = PuzzleBoard.getMovePositions();
+            this.Fringe.Add(this.PuzzleBoard.getPreviousPosition());
+        } //End 
+
         private void determineNextMove(int curDepth)
         {
             //Declare variables
@@ -137,19 +149,17 @@ namespace CS4750HW2
 
             while (this.Fringe.Count > 0)
             {
-                tileID = 9;
+                tileID = 0;
                 for (int i = 0; i < this.Fringe.Count; i++)
                 {
-                    if (this.PuzzleBoard.getTileID(Fringe[i]) < tileID)
+                    if (this.PuzzleBoard.getTileID(Fringe[i]) > tileID)
                     {
                         tileID = this.PuzzleBoard.getTileID(Fringe[i]);
                         nextTile = Fringe[i];
                     } //End if (this.PuzzleBoard.getTileID(Fringe[i]) > tileID)
                 } //End for (int i = 0; i < this.Fringe.Count; i++)
 
-                this.OrderedFringe.Insert(0, new Node(nextTile, this.PuzzleBoard.getTileID(nextTile), curDepth));
-                
-                
+                this.OrderedFringe.Insert(0, new Node(nextTile, this.PuzzleBoard.getTileID(nextTile), curDepth, this.PuzzleBoard.getPuzzleState()));
 
                 this.Fringe.Remove(nextTile);
             } //End while (this.Fringe.Count > 0)
@@ -252,19 +262,38 @@ namespace CS4750HW2
             } //End for (int i = 0; i < 3; i++)
         } //End private void copyBoardState(int[,] puzzle)
 
+        private int[,] copyState(int[,] state, int[,] puzzle)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    state[j, i] = puzzle[j, i];
+                } //End for (int j = 0; j < 3; j++)
+            } //End for (int i = 0; i < 3; i++)
+
+            return state;
+        } //End private void copyState(int[,] puzzle)
+
         public string reportFirstFiveNodesExpanded()
         {
             //Declare variables
-            string returnString = "";
+            string returnString = "First five nodes expanded:\n";
 
             for (int i = 0; i < this.FirstFiveNodesExpanded.Count; i++)
             {
-                returnString += this.FirstFiveNodesExpanded[i].ToString();
-                
-                if  (i < this.FirstFiveNodesExpanded.Count - 1)
+                for (int j = 0; j < 3; j++)
                 {
-                    returnString += ", ";
-                } //End if  (i < this.FirstFiveNodesExpanded.Count - 1)
+                    for (int k = 0; k < 3; k++)
+                    {
+                        returnString += this.FirstFiveNodesExpanded[i][k, j].ToString() + " ";
+                    } //End for (int j = 0; j < 3; j++)
+                    returnString += "\n";
+                } //End for (int i = 0; i < 3; i++)
+                if (i < this.FirstFiveNodesExpanded.Count - 1)
+                {
+                    returnString += "\n";
+                } //End if (i < this.FirstFiveNodesExpanded.Count - 1)
             } //End for (int i = 0; i < this.FirstFiveNodesExpanded.Count; i++)
 
             return returnString;
@@ -277,7 +306,8 @@ namespace CS4750HW2
 
             for (int i = 0; i < this.Path.Count; i++)
             {
-                returnString += this.Path[i].DirUsedToReachTile.ToString() + ":" + this.Path[i].TileID.ToString();
+                returnString += this.Path[i].TileID.ToString();
+                //returnString += this.Path[i].DirUsedToReachTile.ToString() + ":" + this.Path[i].TileID.ToString();
 
                 if (i < this.Path.Count - 1)
                 {
