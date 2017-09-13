@@ -166,7 +166,9 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnDFS_Click(object sender, EventArgs e)
         {
-            this.rtxtResults.Text = "DFS: We don't do anything yet\n";
+            DFS DFS = new DFS(Puzzle3);
+            DFS.performDepthFirstGraphSearch();
+            this.rtxtResults.Text = DFS.getResult();
         } //End private void btnDFS_Click(object sender, EventArgs e)
         /// <summary>
         /// 
@@ -202,13 +204,9 @@ namespace CS4750HW2
                 displayData("Number of nodes expanded: " + astar1.TotalNumNodesExpanded.ToString());
                 displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
             }
-
-       
-            
-
-
             
         } //End private void btnAStar_Click(object sender, EventArgs e)
+        
         /// <summary>
         /// 
         /// </summary>

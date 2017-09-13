@@ -14,14 +14,21 @@ namespace CS4750HW2
         private Stack<Direction> fringe;
         private String output;
 
-        public DFS(Puzzle puzzle){
-            this.puzzle = puzzle;//load initial state of problem
+        public DFS(int[,] puzzle){
+            this.puzzle = new Puzzle(puzzle);//load initial state of problem
             if (this.puzzle == null)
             {
-                throw new NullReferenceException();
+                throw new NullReferenceException("Cannot initialize DFS with");
             }
+
+            output = "***********************************\n" +
+                     "*        Depth First Search       *\n" +
+                     "***********************************\n";
         }
 
+        /// <summary>
+        ///     Performs depth first search
+        /// </summary>
         public void performDepthFirstGraphSearch()
         {
             int nodesExpanded = 0;
@@ -32,8 +39,16 @@ namespace CS4750HW2
             }
             else
             {
+                output += "\nInitial State:\n";
                 output += puzzle.printCurBoardState();
-                output += sortPointsByValue(puzzle.getMovePositions()).ToString();
+                output += "\n\n";
+
+                List<Point> sorted = sortPointsByValue(puzzle.getMovePositions());
+
+                foreach (Point p in sorted)
+                {
+                    output += puzzle.getValue(p) + "\n";
+                }
             }
         }
 
@@ -59,6 +74,10 @@ namespace CS4750HW2
             }
         }
 
+        /// <summary>
+        ///     Get a log of what happened
+        /// </summary>
+        /// <returns>A string describing the result of depth first search.</returns>
         public String getResult()
         {
             return output;
