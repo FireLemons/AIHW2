@@ -104,7 +104,7 @@ namespace CS4750HW2
                     this.FirstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
                 } //End if (numNodesExpanded < 5)
 
-                this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, nextMove));
+                this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, this.originalBoardState, nextMove));
 
                 //if Goal-Test(problem,State(node)) then return node
                 if (this.PuzzleBoard.isInGoalState())
