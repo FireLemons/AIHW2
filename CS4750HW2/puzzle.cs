@@ -87,6 +87,16 @@ namespace CS4750HW2
             }
         }
 
+        public int getValue(Point p)
+        {
+            return puzzle[p.X, p.Y];
+        }
+
+        /// <summary>
+        ///     Gets the state of the board if a move were to be applied.
+        /// </summary>
+        /// <param name="d">The direction to apply a move.</param>
+        /// <returns>A 2d matrix representing the board.</returns>
         public int[,] getState(Direction d)
         {
             int[,] result = puzzle;
