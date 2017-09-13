@@ -192,7 +192,7 @@ namespace CS4750HW2
                 if (x != null)
                 {
                     this.displayData("Success, a solution was found.");
-                    displayData(ids1.reportPathSolution());
+                    displayData(astar1.reportPathSolution());
                 } //End if (x != null)
                 else
                 {
