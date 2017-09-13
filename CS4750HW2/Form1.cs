@@ -175,7 +175,39 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnAStar_Click(object sender, EventArgs e)
         {
-            this.rtxtResults.Text = "A*: We don't do anything yet\n";
+            this.displayData("A* Search\n");
+
+            List<int[,]> puzzles = new List<int[,]> { puzzle1, puzzle2, puzzle3 };
+
+            for(int i = 0; i < puzzles.Count; i++)
+            {
+                int[,] puzzle = puzzles[i];
+                AStar astar1 = new AStar(puzzle);
+                this.timer = Stopwatch.StartNew();
+                var x = AStar.doTreeSearch();
+                this.timer.Stop();
+                displayData("Puzzle" + (i+1) + ":\n");
+                displayData(astar1.reportFirstFiveNodesExpanded());
+
+                if (x != null)
+                {
+                    this.displayData("Success, a solution was found.");
+                    displayData(ids1.reportPathSolution());
+                } //End if (x != null)
+                else
+                {
+                    this.displayData("Failure, a solution was not found.");
+                } //End else
+
+                displayData("Number of nodes expanded: " + astar1.TotalNumNodesExpanded.ToString());
+                displayData("Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " milliseconds");
+            }
+
+       
+            
+
+
+            
         } //End private void btnAStar_Click(object sender, EventArgs e)
         /// <summary>
         /// 

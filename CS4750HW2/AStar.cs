@@ -131,8 +131,34 @@ namespace CS4750HW2
 
         private void determineNextMove(int curDepth)
         {
-            /**Need to implement**/
+            //Declare variables
+            Point nextTile = new Point(-1, -1);
+            int tileID = 9;
 
+            while (this.Fringe.Count > 0)
+            {
+                tileID = 0;
+                int lowestManhattanDistance = Int32.MaxValue;
+                for (int i = 0; i < this.Fringe.Count; i++)
+                {
+                    //get the current point
+                    Point currPoint = this.Fringe[i];
+                    //get the manhatan distance for this point
+                    int distance = this.PuzzleBoard.getSingleManahatanDistance(currPoint);
+                    //if this distance is lower than the current lowest, then it is now the lowest
+                    if (distance < lowestManhattanDistance)
+                    {
+                        tileID = this.PuzzleBoard.getTileID(currPoint);
+                        nextTile = currPoint;
+                        lowestManhattanDistance = distance;
+                    }
+                    
+                } //End for (int i = 0; i < this.Fringe.Count; i++)
+
+                this.OrderedFringe.Insert(0, new Node(nextTile, this.PuzzleBoard.getTileID(nextTile), curDepth, this.PuzzleBoard.getPuzzleState()));
+
+                this.Fringe.Remove(nextTile);
+            } //End while (this.Fringe.Count > 0)
         } //End private Direction determineNextMove()
 
         /*
