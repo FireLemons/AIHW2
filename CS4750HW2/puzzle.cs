@@ -99,7 +99,8 @@ namespace CS4750HW2
         }
 
         /// <summary>
-        ///     Gets the state of the board if a move were to be applied.
+        ///     Erroneous gets the state of the board if a move were to be applied.
+        ///     It actually changes the state of the baord
         /// </summary>
         /// <param name="d">The direction to apply a move.</param>
         /// <returns>A 2d matrix representing the board.</returns>
@@ -147,6 +148,63 @@ namespace CS4750HW2
                     
                     puzzle[emptyPosition.X, emptyPosition.Y] = puzzle[emptyPosition.X + 1, emptyPosition.Y];
                     puzzle[emptyPosition.X + 1, emptyPosition.Y] = temp;
+
+                    return result;
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        ///     Corrected gets the state of the board if a move were to be applied.
+        /// </summary>
+        /// <param name="d">The direction to apply a move.</param>
+        /// <returns>A 2d matrix representing the board.</returns>
+        public int[,] getPotentialState(Direction d)
+        {
+            int[,] result = puzzle.Clone() as int[,];
+            int temp = puzzle[emptyPosition.X, emptyPosition.Y];
+
+            switch (d)
+            {
+                case Direction.Up:
+                    if (!isValidTile(new Point(emptyPosition.X, emptyPosition.Y - 1)))
+                    {
+                        return null;
+                    }
+
+                    result[emptyPosition.X, emptyPosition.Y] = result[emptyPosition.X, emptyPosition.Y - 1];
+                    result[emptyPosition.X, emptyPosition.Y - 1] = temp;
+
+                    return result;
+                case Direction.Down:
+                    if (!isValidTile(new Point(emptyPosition.Y + 1, emptyPosition.X)))
+                    {
+                        return null;
+                    }
+
+                    result[emptyPosition.X, emptyPosition.Y] = result[emptyPosition.X, emptyPosition.Y + 1];
+                    result[emptyPosition.X, emptyPosition.Y + 1] = temp;
+
+                    return result;
+                case Direction.Left:
+                    if (!isValidTile(new Point(emptyPosition.X - 1, emptyPosition.Y)))
+                    {
+                        return null;
+                    }
+
+                    result[emptyPosition.X, emptyPosition.Y] = result[emptyPosition.X - 1, emptyPosition.Y];
+                    result[emptyPosition.X - 1, emptyPosition.Y] = temp;
+
+                    return result;
+                case Direction.Right:
+                    if (!isValidTile(new Point(emptyPosition.Y, emptyPosition.X + 1)))
+                    {
+                        return null;
+                    }
+
+                    result[emptyPosition.X, emptyPosition.Y] = result[emptyPosition.X + 1, emptyPosition.Y];
+                    result[emptyPosition.X + 1, emptyPosition.Y] = temp;
 
                     return result;
                 default:

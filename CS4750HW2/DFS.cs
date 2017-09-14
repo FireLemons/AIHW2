@@ -52,7 +52,7 @@ namespace CS4750HW2
             Puzzle current;
             while (true)
             {
-                if (fringe.Count == 0)
+                if (fringe.Count == 0 || nodesExpanded >= 100000)
                 {
                     output += "Failure. Could not find goal state";
                     return;
@@ -69,9 +69,10 @@ namespace CS4750HW2
                     //      if node is an new state
                     if(!isExplored(current.getPuzzleState()))
                     {
-                        //          add the expansion of the node to the fringe
+                        // add the expansion of the node to the fringe
                         fringe.Push(sortPointsByValue(puzzle.getMovePositions()));
-                        //          add node to closed and path
+                        // add node to closed and path
+                        
                     }
                 }
 
@@ -102,9 +103,9 @@ namespace CS4750HW2
 
                 foreach (Point p in unsortedList)
                 {
-
+                    result.Push(new Puzzle(puzzle.getPotentialState(puzzle.determineDirection(p))));
                 }
-
+                
                 return result;
             }
         }
