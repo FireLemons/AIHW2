@@ -166,7 +166,7 @@ namespace CS4750HW2
         /// <param name="e"></param>
         private void btnDFS_Click(object sender, EventArgs e)
         {
-            DFS DFS = new DFS(Puzzle3);
+            DFS DFS = new DFS(Puzzle2);
             DFS.performDepthFirstGraphSearch();
             this.rtxtResults.Text = DFS.getResult();
         } //End private void btnDFS_Click(object sender, EventArgs e)

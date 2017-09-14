@@ -9,21 +9,21 @@ namespace CS4750HW2
 {
     class DFS 
     {
-        private Puzzle puzzle;
+        private Puzzle initialNode;
         private List<int[,]> closed;
-        private Stack<Stack<Puzzle>> fringe;//I know it doesn't quite follow the psudeocode but it saves memory
+        private Stack<Stack<Tuple<Puzzle, int>>> fringe;//I know it doesn't quite follow the psudeocode but it saves memory
         private Stack<int> path;
         private String output;
 
-        public DFS(int[,] puzzle)
+        public DFS(int[,] puzzleInfo)
         {
 
-            fringe = new Stack<Stack<Puzzle>>();
+            fringe = new Stack<Stack<Tuple<Puzzle, int>>>();
             closed = new List<int[,]>();
             path = new Stack<int>();
 
-            this.puzzle = new Puzzle(puzzle);//load initial state of problem
-            if (this.puzzle == null)
+            initialNode = new Puzzle(puzzleInfo);//load initial state of problem
+            if (initialNode == null)
             {
                 throw new NullReferenceException("Cannot initialize DFS with");
             }
@@ -41,15 +41,15 @@ namespace CS4750HW2
             int nodesExpanded = 0;
             
             output += "\nInitial State:\n";
-            output += puzzle.printCurBoardState();
+            output += initialNode.printCurBoardState();
             output += "\n\n";
             
             //initialize fringe
-            Stack<Puzzle> initialState = new Stack<Puzzle>();
-            initialState.Push(puzzle);
+            Stack<Tuple<Puzzle, int>> initialState = new Stack<Tuple<Puzzle, int>>();
+            initialState.Push(Tuple.Create(initialNode, 0));
             fringe.Push(initialState);
 
-            Puzzle current;
+            Tuple<Puzzle, int> current;
             while (true)
             {
                 if (fringe.Count == 0 || nodesExpanded >= 100000)
@@ -60,23 +60,39 @@ namespace CS4750HW2
                 // if Top of stack is empty 
                 if (fringe.Peek().Count == 0)
                 {
-                    //remove the empty entry from the top of the stack
-                    //remove the invalid node from the path
+                    fringe.Pop();
+                    path.Pop();
                 }
                 else
                 {
                     current = fringe.Peek().Pop();
-                    //      if node is an new state
-                    if(!isExplored(current.getPuzzleState()))
+                    //check for goal state
+                    if (current.Item1.isInGoalState())
                     {
+                        output += "GOAL FOUND\n\n";
+                        output += "Nodes Expanded:" + nodesExpanded + "\n";
+                        output += "Path taken:";
+
+                        foreach(int option in path.Cast<int>().ToList())
+                        {
+                            output += option + " ";
+                        }
+                        output += "\n";
+                        return;
+                    }
+
+                    // if node is an new state
+                    if(!isExplored(current.Item1.getPuzzleState()))
+                    {
+                        //System.Diagnostics.Debug.WriteLine(current.printCurBoardState() + "\n");
+                        nodesExpanded++;
                         // add the expansion of the node to the fringe
-                        fringe.Push(sortPointsByValue(puzzle.getMovePositions()));
+                        fringe.Push(sortPointsByValue(current.Item1.getMovePositions(), current.Item1));
                         // add node to closed and path
-                        
+                        closed.Add(current.Item1.getPuzzleState());
+                        path.Push(current.Item2);
                     }
                 }
-
-                break;
             }
         }
 
@@ -85,25 +101,25 @@ namespace CS4750HW2
         /// </summary>
         /// <param name="unsortedList">The list of points to be sorted.</param>
         /// <returns>A list of points sorted by their corresponding tile value.</returns>
-        public Stack<Puzzle> sortPointsByValue(List<Point> unsortedList)
+        public Stack<Tuple<Puzzle, int>> sortPointsByValue(List<Point> unsortedList, Puzzle node)
         {
             if (unsortedList == null || unsortedList.Count == 0)
             {
-                return new Stack<Puzzle>();
+                return new Stack<Tuple<Puzzle, int>>();
             }
             else
             {
                 //sort function made with the help of https://stackoverflow.com/a/4668558
                 unsortedList.Sort((a, b) => 
                 {
-                    return puzzle.getValue(b).CompareTo(puzzle.getValue(a));
+                    return node.getValue(b).CompareTo(node.getValue(a));
                 });
 
-                Stack<Puzzle> result = new Stack<Puzzle>();
+                Stack<Tuple<Puzzle, int>> result = new Stack<Tuple<Puzzle, int>>();
 
                 foreach (Point p in unsortedList)
                 {
-                    result.Push(new Puzzle(puzzle.getPotentialState(puzzle.determineDirection(p))));
+                    result.Push(Tuple.Create(new Puzzle(node.getPotentialState(node.determineDirection(p))), node.getTileID(p)));
                 }
                 
                 return result;
