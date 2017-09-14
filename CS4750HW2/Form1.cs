@@ -186,7 +186,7 @@ namespace CS4750HW2
                 int[,] puzzle = puzzles[i];
                 AStar astar1 = new AStar(puzzle);
                 this.timer = Stopwatch.StartNew();
-                var x = AStar.doTreeSearch();
+                var x = astar1.doTreeSearch();
                 this.timer.Stop();
                 displayData("Puzzle" + (i+1) + ":\n");
                 displayData(astar1.reportFirstFiveNodesExpanded());
