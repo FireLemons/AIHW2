@@ -144,7 +144,7 @@ namespace CS4750HW2
                     //get the current point
                     Point currPoint = this.Fringe[i];
                     //get the manhatan distance for this point
-                    int distance = this.PuzzleBoard.getSingleManahatanDistance(currPoint);
+                    int distance = this.PuzzleBoard.getSingleManahatanDistance(currPoint) + curDepth;
                     //if this distance is lower than the current lowest, then it is now the lowest
                     if (distance < lowestManhattanDistance)
                     {
