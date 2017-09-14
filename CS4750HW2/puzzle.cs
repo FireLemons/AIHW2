@@ -40,7 +40,14 @@ namespace CS4750HW2
                 }
             }
         }
-        
+
+        public Puzzle(int[,] puzzle, Point emptyPosition)
+        {
+            this.puzzle = puzzle;
+            this.emptyPosition = emptyPosition;
+            this.previous = new Point(-1, -1);
+        }
+
         /// <summary>
         ///     Gets the neighboring tiles as points excluding the parent.
         ///     Expansion function.

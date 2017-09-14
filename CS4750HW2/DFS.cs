@@ -11,14 +11,16 @@ namespace CS4750HW2
     {
         private Puzzle puzzle;
         private List<int[,]> closed;
-        private Stack<Point> fringe;//I know it doesn't follow the psudeocode but it saves memory
+        private Stack<Stack<Puzzle>> fringe;//I know it doesn't quite follow the psudeocode but it saves memory
+        private Stack<int> path;
         private String output;
 
         public DFS(int[,] puzzle)
         {
 
-            fringe = new Stack<Point>();
+            fringe = new Stack<Stack<Puzzle>>();
             closed = new List<int[,]>();
+            path = new Stack<int>();
 
             this.puzzle = new Puzzle(puzzle);//load initial state of problem
             if (this.puzzle == null)
@@ -37,46 +39,43 @@ namespace CS4750HW2
         public void performDepthFirstGraphSearch()
         {
             int nodesExpanded = 0;
+            
+            output += "\nInitial State:\n";
+            output += puzzle.printCurBoardState();
+            output += "\n\n";
+            
+            //initialize fringe
+            Stack<Puzzle> initialState = new Stack<Puzzle>();
+            initialState.Push(puzzle);
+            fringe.Push(initialState);
 
-            if (puzzle.isInGoalState())
+            Puzzle current;
+            while (true)
             {
-                output += "\nInitial State:\n";
-                output += puzzle.printCurBoardState();
-                output += "\nGoal Found";
-            }
-            else
-            {
-                output += "\nInitial State:\n";
-                output += puzzle.printCurBoardState();
-                output += "\n\n";
-
-                List<Point> sorted = sortPointsByValue(puzzle.getMovePositions());
-
-                foreach (Point p in sorted)
+                if (fringe.Count == 0)
                 {
-                    fringe.Push(p);
+                    output += "Failure. Could not find goal state";
+                    return;
+                }
+                // if Top of stack is empty 
+                if (fringe.Peek().Count == 0)
+                {
+                    //remove the empty entry from the top of the stack
+                    //remove the invalid node from the path
+                }
+                else
+                {
+                    current = fringe.Peek().Pop();
+                    //      if node is an new state
+                    if(!isExplored(current.getPuzzleState()))
+                    {
+                        //          add the expansion of the node to the fringe
+                        fringe.Push(sortPointsByValue(puzzle.getMovePositions()));
+                        //          add node to closed and path
+                    }
                 }
 
-                Point current;
-                while (true)
-                {
-                    try
-                    {
-                        current = fringe.Pop();
-                    }
-                    catch (InvalidOperationException ex)
-                    {
-                        output += "Could not find goal state.";
-                        return;
-                    }
-
-                    int[,] state = puzzle.getState(puzzle.determineDirection(current));
-                    output += isExplored(state) + "\n\n";
-
-                    if (!isExplored(state)){
-                        closed.Add(state);
-                    }
-                }
+                break;
             }
         }
 
@@ -85,20 +84,28 @@ namespace CS4750HW2
         /// </summary>
         /// <param name="unsortedList">The list of points to be sorted.</param>
         /// <returns>A list of points sorted by their corresponding tile value.</returns>
-        public List<Point> sortPointsByValue(List<Point> unsortedList)
+        public Stack<Puzzle> sortPointsByValue(List<Point> unsortedList)
         {
             if (unsortedList == null || unsortedList.Count == 0)
             {
-                return new List<Point>();
+                return new Stack<Puzzle>();
             }
             else
             {
                 //sort function made with the help of https://stackoverflow.com/a/4668558
                 unsortedList.Sort((a, b) => 
                 {
-                    return puzzle.getValue(a).CompareTo(puzzle.getValue(b));
+                    return puzzle.getValue(b).CompareTo(puzzle.getValue(a));
                 });
-                return unsortedList;
+
+                Stack<Puzzle> result = new Stack<Puzzle>();
+
+                foreach (Point p in unsortedList)
+                {
+
+                }
+
+                return result;
             }
         }
 
