@@ -182,7 +182,7 @@ namespace CS4750HW2
             List<int[,]> puzzles = new List<int[,]> { puzzle1, puzzle2, puzzle3 };
 
             for (int i = 0; i < puzzles.Count; i++)
-            //for (int i = 0; i < 1; i++)
+            //for (int i = 0; i < 2; i++)
             {
                 int[,] puzzle = puzzles[i];
                 AStar astar1 = new AStar(puzzle);

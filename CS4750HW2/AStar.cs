@@ -75,23 +75,36 @@ namespace CS4750HW2
                 } //End if (curDepth >= maxDepth)
                 //*/
 
+                /**
                 if (this.OrderedFringe.Count > 0 && this.OrderedFringe[0].DepthWhenFound < curDepth - 1)
                 {
                     this.PuzzleBoard = new Puzzle(copyState(new int[3, 3], this.OrderedFringe[0].state));
                     this.Path = new List<Node>(this.OrderedFringe[0].Path);
                 } //End if (this.OrderedFringe.Count > 0 && this.OrderedFringe[0].DepthWhenFound < curDepth)
+                //*/
 
                 this.Fringe.Clear();
                 this.Fringe = PuzzleBoard.getMovePositions();
                 this.TotalNumNodesExpanded += this.Fringe.Count;
 
                 determineNextMove(curDepth);
+
+                if (this.OrderedFringe.Count > 0 && this.OrderedFringe[0].DepthWhenFound < curDepth - 1)
+                {
+                    this.PuzzleBoard = new Puzzle(copyState(new int[3, 3], this.OrderedFringe[0].state));
+                    this.Path = new List<Node>(this.OrderedFringe[0].Path);
+                } //End if (this.OrderedFringe.Count > 0 && this.OrderedFringe[0].DepthWhenFound < curDepth)
+
                 nextMove = this.PuzzleBoard.determineDirection(this.OrderedFringe[0].TileLocation);
                 //nextMove = determineDirection(this.OrderedFringe[0].TileLocation);
 
                 if (nextMove == Direction.NULL)
                 {
-                    return null;
+                    this.PuzzleBoard = new Puzzle(copyState(new int[3, 3], this.OrderedFringe[0].state));
+                    this.Path = new List<Node>(this.OrderedFringe[0].Path);
+                    nextMove = this.PuzzleBoard.determineDirection(this.OrderedFringe[0].TileLocation);
+
+                    //return null;
                 } //End  if (nextMove == Direction.NULL)
 
                 this.PuzzleBoard.setState(nextMove);
