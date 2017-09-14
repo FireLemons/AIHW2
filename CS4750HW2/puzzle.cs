@@ -21,12 +21,10 @@ namespace CS4750HW2
         private int[,] puzzle;
         private Point emptyPosition;
         private Point previous;
-        private List<Direction> path;
 
         public Puzzle(int[,] puzzle)
         {
             this.puzzle = puzzle;
-            this.path = new List<Direction>();
             this.emptyPosition = new Point();
             this.previous = new Point(-1, -1);
 
@@ -151,7 +149,6 @@ namespace CS4750HW2
 
         public bool setState(Direction d)
         {
-            path.Add(d);
             previous = emptyPosition;
             int[,] tryMove = getState(d);
 
@@ -183,15 +180,13 @@ namespace CS4750HW2
 
         public bool undo()
         {
-            if (path.Count == 0)
+            if (previous.X + previous.Y < 0)
             {
                 throw new InvalidOperationException("Cannot undo move. No moves have been made yet.");
             }
             else
             {
-                path.RemoveAt(path.Count - 1);
                 setState(determineDirection(previous));
-                path.RemoveAt(path.Count - 1);
                 return true;
             }
         }
@@ -325,12 +320,7 @@ namespace CS4750HW2
 
             return tileID;
         } //End public int getTileID(Point tile)
-
-        public List<Direction> getPathList()
-        {
-            return this.path;
-        } //End 
-
+        
         public string printCurBoardState()
         {
             //Declare variables
