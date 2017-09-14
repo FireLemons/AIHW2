@@ -11,10 +11,15 @@ namespace CS4750HW2
     {
         private Puzzle puzzle;
         private List<int[,]> closed;
-        private Stack<Direction> fringe;
+        private Stack<Point> fringe;//I know it doesn't follow the psudeocode but it saves memory
         private String output;
 
-        public DFS(int[,] puzzle){
+        public DFS(int[,] puzzle)
+        {
+
+            fringe = new Stack<Point>();
+            closed = new List<int[,]>();
+
             this.puzzle = new Puzzle(puzzle);//load initial state of problem
             if (this.puzzle == null)
             {
@@ -35,7 +40,9 @@ namespace CS4750HW2
 
             if (puzzle.isInGoalState())
             {
+                output += "\nInitial State:\n";
                 output += puzzle.printCurBoardState();
+                output += "\nGoal Found";
             }
             else
             {
@@ -47,7 +54,28 @@ namespace CS4750HW2
 
                 foreach (Point p in sorted)
                 {
-                    output += puzzle.getValue(p) + "\n";
+                    fringe.Push(p);
+                }
+
+                Point current;
+                while (true)
+                {
+                    try
+                    {
+                        current = fringe.Pop();
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        output += "Could not find goal state.";
+                        return;
+                    }
+
+                    int[,] state = puzzle.getState(puzzle.determineDirection(current));
+                    output += isExplored(state) + "\n\n";
+
+                    if (!isExplored(state)){
+                        closed.Add(state);
+                    }
                 }
             }
         }
@@ -72,6 +100,44 @@ namespace CS4750HW2
                 });
                 return unsortedList;
             }
+        }
+
+        /// <summary>
+        ///     Determines whether a state has been expanded or not
+        ///     Created with the help of https://stackoverflow.com/a/9854944
+        /// </summary>
+        /// <returns>True if the state has been seen already, false otherwise</returns>
+        private Boolean isExplored(int[,] state)
+        {
+            return closed.Find(x => isEqual(x, state)) != null;
+        }
+
+        /// <summary>
+        ///     Compares two 2D arrays
+        ///     copied from https://stackoverflow.com/a/12446807
+        /// </summary>
+        /// <param name="a">The first 2D array to be compared</param>
+        /// <param name="b">The second 2D array to be compared</param>
+        /// <returns>True if all of the elements are the same, false otherwise</returns>
+        private Boolean isEqual(int[,] a, int[,] b)
+        {
+            if (!(a.GetLength(0) == b.GetLength(0) && a.GetLength(1) == b.GetLength(1)))
+            {
+                return false;
+            }
+
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    if (a[i, j] != b[i, j])
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>

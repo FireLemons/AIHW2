@@ -45,6 +45,7 @@ namespace CS4750HW2
         
         /// <summary>
         ///     Gets the neighboring tiles as points excluding the parent.
+        ///     Expansion function.
         /// </summary>
         /// <param name="origin">The tile moved from</param>
         /// <param name="tile">The tile to find children for</param>
@@ -178,6 +179,21 @@ namespace CS4750HW2
             }
 
             return false;
+        }
+
+        public bool undo()
+        {
+            if (path.Count == 0)
+            {
+                throw new InvalidOperationException("Cannot undo move. No moves have been made yet.");
+            }
+            else
+            {
+                path.RemoveAt(path.Count - 1);
+                setState(determineDirection(previous));
+                path.RemoveAt(path.Count - 1);
+                return true;
+            }
         }
 
         public Direction determineDirection(Point nextTile)
