@@ -39,6 +39,7 @@
             // 
             // btnIDS
             // 
+            this.btnIDS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnIDS.Location = new System.Drawing.Point(12, 505);
             this.btnIDS.Name = "btnIDS";
             this.btnIDS.Size = new System.Drawing.Size(75, 23);
@@ -49,6 +50,7 @@
             // 
             // btnDFS
             // 
+            this.btnDFS.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnDFS.Location = new System.Drawing.Point(93, 505);
             this.btnDFS.Name = "btnDFS";
             this.btnDFS.Size = new System.Drawing.Size(75, 23);
@@ -59,6 +61,7 @@
             // 
             // btnAStar
             // 
+            this.btnAStar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAStar.Location = new System.Drawing.Point(174, 505);
             this.btnAStar.Name = "btnAStar";
             this.btnAStar.Size = new System.Drawing.Size(75, 23);
@@ -69,6 +72,7 @@
             // 
             // btnAll
             // 
+            this.btnAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnAll.Location = new System.Drawing.Point(255, 505);
             this.btnAll.Name = "btnAll";
             this.btnAll.Size = new System.Drawing.Size(75, 23);
@@ -79,6 +83,9 @@
             // 
             // rtxtResults
             // 
+            this.rtxtResults.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.rtxtResults.Location = new System.Drawing.Point(12, 25);
             this.rtxtResults.Name = "rtxtResults";
             this.rtxtResults.Size = new System.Drawing.Size(399, 474);
@@ -96,6 +103,7 @@
             // 
             // btnClearResults
             // 
+            this.btnClearResults.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnClearResults.Location = new System.Drawing.Point(336, 505);
             this.btnClearResults.Name = "btnClearResults";
             this.btnClearResults.Size = new System.Drawing.Size(75, 23);

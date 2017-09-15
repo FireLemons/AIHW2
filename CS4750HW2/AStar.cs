@@ -40,52 +40,24 @@ namespace CS4750HW2
         public List<Node> doTreeSearch()
         {
             //Declare variables
-            int maxDepth = 0;
             int curDepth = 0;
             Direction nextMove = Direction.NULL;
 
             //fringe = Insert(Make-Node(Initial-State[problem]), fringe)
-            //this.Fringe = PuzzleBoard.getMovePositions();
             this.FirstFiveNodesExpanded.Add(copyState(new int[3, 3], this.originalBoardState));
-            //maxDepth += 1;
             this.TotalNumNodesExpanded += 1;
 
             while (!PuzzleBoard.isInGoalState())
             {
                 //if fringe is empty then return failure
-                //if ((curDepth >= maxDepth && this.OrderedFringe.Count <= 0) || (this.OrderedFringe.Count <= 0 && this.Fringe.Count <= 0))
                 if (this.OrderedFringe.Count <= 0 && this.Fringe.Count <= 0 && TotalNumNodesExpanded > 1)
                 {
                     return null;
                 } //End if (curDepth >= maxDepth)
 
                 //node = Remove-Front(fringe)
-                /**
-                if (curDepth >= maxDepth)
-                {
-                    if (curDepth > this.OrderedFringe[0].DepthWhenFound)
-                    {
-                        while (curDepth > this.OrderedFringe[0].DepthWhenFound)
-                        {
-                            curDepth -= 1;
-                            this.PuzzleBoard.setState(this.PuzzleBoard.getReverseDirection(this.Path.Last().DirUsedToReachTile));
-                            this.Path.Remove(this.Path.Last());
-                        } //End while (curDepth > this.OrderedFringe[0].DepthWhenFound)
-                    } //End if (curDepth > this.OrderedFringe[0].DepthWhenFound)
-                } //End if (curDepth >= maxDepth)
-                //*/
-
-                /**
-                if (this.OrderedFringe.Count > 0 && this.OrderedFringe[0].DepthWhenFound < curDepth - 1)
-                {
-                    this.PuzzleBoard = new Puzzle(copyState(new int[3, 3], this.OrderedFringe[0].state));
-                    this.Path = new List<Node>(this.OrderedFringe[0].Path);
-                } //End if (this.OrderedFringe.Count > 0 && this.OrderedFringe[0].DepthWhenFound < curDepth)
-                //*/
-
                 this.Fringe.Clear();
                 this.Fringe = PuzzleBoard.getMovePositions();
-                this.TotalNumNodesExpanded += this.Fringe.Count;
 
                 determineNextMove(curDepth);
 
@@ -101,22 +73,21 @@ namespace CS4750HW2
                 if (nextMove == Direction.NULL)
                 {
                     this.PuzzleBoard = new Puzzle(copyState(new int[3, 3], this.OrderedFringe[0].state));
+                    this.PuzzleBoard.setState(this.PuzzleBoard.getReverseDirection(this.OrderedFringe[0].DirUsedToReachTile));
                     this.Path = new List<Node>(this.OrderedFringe[0].Path);
                     nextMove = this.PuzzleBoard.determineDirection(this.OrderedFringe[0].TileLocation);
-
-                    //return null;
                 } //End  if (nextMove == Direction.NULL)
 
                 this.PuzzleBoard.setState(nextMove);
                 curDepth += 1;
                 this.TotalNumNodesExpanded += 1;
+                System.Console.WriteLine("Nodes expanded: " + this.TotalNumNodesExpanded);
 
                 this.OrderedFringe.RemoveAt(0);
 
                 if (this.FirstFiveNodesExpanded.Count < 5)
                 {
                     this.FirstFiveNodesExpanded.Add(copyState(new int[3, 3], this.PuzzleBoard.getPuzzleState()));
-                    //this.FirstFiveNodesExpanded.Add(this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()));
                 } //End if (numNodesExpanded < 5)
 
                 this.Path.Add(new Node(this.PuzzleBoard.getPreviousPosition(), this.PuzzleBoard.getTileID(this.PuzzleBoard.getPreviousPosition()), curDepth - 1, this.originalBoardState, nextMove));
@@ -129,15 +100,6 @@ namespace CS4750HW2
 
                 //fringe = InsertAll(Expand(node, problem), fringe)
                 
-                /**
-                if (curDepth < maxDepth)
-                {
-                    this.Fringe.Clear();
-                    this.Fringe = PuzzleBoard.getMovePositions();
-                    this.TotalNumNodesExpanded += this.Fringe.Count;
-                } //End if (curDepth < maxDepth)
-                //*/
-
                 if (this.TotalNumNodesExpanded >= 100000)
                 {
                     return null;
@@ -305,16 +267,22 @@ namespace CS4750HW2
         public string reportFirstFiveNodesExpanded()
         {
             //Declare variables
-            string returnString = "";
+            string returnString = "First five nodes expanded:\n";
 
             for (int i = 0; i < this.FirstFiveNodesExpanded.Count; i++)
             {
-                returnString += this.FirstFiveNodesExpanded[i].ToString();
-
+                for (int j = 0; j < 3; j++)
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        returnString += this.FirstFiveNodesExpanded[i][k, j].ToString() + " ";
+                    } //End for (int j = 0; j < 3; j++)
+                    returnString += "\n";
+                } //End for (int i = 0; i < 3; i++)
                 if (i < this.FirstFiveNodesExpanded.Count - 1)
                 {
-                    returnString += ", ";
-                } //End if  (i < this.FirstFiveNodesExpanded.Count - 1)
+                    returnString += "\n";
+                } //End if (i < this.FirstFiveNodesExpanded.Count - 1)
             } //End for (int i = 0; i < this.FirstFiveNodesExpanded.Count; i++)
 
             return returnString;
@@ -327,7 +295,8 @@ namespace CS4750HW2
 
             for (int i = 0; i < this.Path.Count; i++)
             {
-                returnString += this.Path[i].DirUsedToReachTile.ToString() + ":" + this.Path[i].TileID.ToString();
+                returnString += this.Path[i].TileID.ToString();
+                //returnString += this.Path[i].DirUsedToReachTile.ToString() + ":" + this.Path[i].TileID.ToString();
 
                 if (i < this.Path.Count - 1)
                 {
