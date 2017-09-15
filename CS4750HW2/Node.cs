@@ -19,6 +19,15 @@ namespace CS4750HW2
         public List<Node> PossibleMoves { get; private set; }
         public Direction DirUsedToReachTile { get; private set; }
         public int[,] state { get; private set; }
+        public int ManahattanDistance { get; private set; }
+        public int Cost
+        {
+            get
+            {
+                return this.DepthWhenFound + 1 + ManahattanDistance;
+            } //End get
+        } //End public int Cost
+        public List<Node> Path { get; private set; }
 
         /***************CONSTRUCTOR***************/
         public Node(Point location, int id, int depth, int[,] puzzle, Direction dir = Direction.NULL)
@@ -29,6 +38,18 @@ namespace CS4750HW2
             this.DirUsedToReachTile = dir;
             this.state = new int[3, 3];
             copyBoardState(puzzle);
+        } //End public IDS(puzzle puzzle)
+
+        public Node(Point location, int id, int depth, int[,] puzzle, int manahattanDist, List<Node> pathTaken, Direction dir = Direction.NULL)
+        {
+            this.TileLocation = location;
+            this.TileID = id;
+            this.DepthWhenFound = depth;
+            this.DirUsedToReachTile = dir;
+            this.state = new int[3, 3];
+            copyBoardState(puzzle);
+            this.ManahattanDistance = manahattanDist;
+            this.Path = new List<Node>(pathTaken);
         } //End public IDS(puzzle puzzle)
 
         /***************METHODS***************/
