@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -7,17 +8,19 @@ using System.Threading.Tasks;
 
 namespace CS4750HW2
 {
-    class DFS 
+    class DFS //Depth First Search
     {
         private Puzzle initialNode;
         private List<int[,]> closed;
         private Stack<Stack<Tuple<Puzzle, int>>> fringe;//I know it doesn't quite follow the psudeocode but it saves memory
         private Stack<int> path;
         private String output;
+        private Stopwatch timer;
 
         public DFS(int[,] puzzleInfo)
         {
-
+            timer = Stopwatch.StartNew();
+            int[,] puzzleInfoCopy = puzzleInfo.Clone() as int[,];
             fringe = new Stack<Stack<Tuple<Puzzle, int>>>();
             closed = new List<int[,]>();
             path = new Stack<int>();
@@ -38,6 +41,7 @@ namespace CS4750HW2
         /// </summary>
         public void performDepthFirstGraphSearch()
         {
+            timer.Start();
             int nodesExpanded = 0;
             
             output += "\nInitial State:\n";
@@ -69,8 +73,11 @@ namespace CS4750HW2
                     //check for goal state
                     if (current.Item1.isInGoalState())
                     {
+                        timer.Stop();
                         output += "GOAL FOUND\n\n";
                         output += "Nodes Expanded:" + nodesExpanded + "\n";
+                        output += "Moves to solution" + (path.Count + 1) + "\n";
+                        output += "Time elapsed: " + this.timer.ElapsedMilliseconds.ToString() + " ms\n";
                         output += "Path taken:";
 
                         foreach(int option in path.Cast<int>().ToList())
@@ -84,7 +91,7 @@ namespace CS4750HW2
                     // if node is an new state
                     if(!isExplored(current.Item1.getPuzzleState()))
                     {
-                        //System.Diagnostics.Debug.WriteLine(current.printCurBoardState() + "\n");
+                        //System.Diagnostics.Debug.WriteLine(current.Item1.printCurBoardState() + "\n");
                         nodesExpanded++;
                         // add the expansion of the node to the fringe
                         fringe.Push(sortPointsByValue(current.Item1.getMovePositions(), current.Item1));
