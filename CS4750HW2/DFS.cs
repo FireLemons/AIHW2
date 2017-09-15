@@ -91,7 +91,7 @@ namespace CS4750HW2
                     // if node is an new state
                     if(!isExplored(current.Item1.getPuzzleState()))
                     {
-                        //System.Diagnostics.Debug.WriteLine(current.Item1.printCurBoardState() + "\n");
+                        System.Diagnostics.Debug.WriteLine(current.Item1.printCurBoardState() + "\n");
                         nodesExpanded++;
                         // add the expansion of the node to the fringe
                         fringe.Push(sortPointsByValue(current.Item1.getMovePositions(), current.Item1));
